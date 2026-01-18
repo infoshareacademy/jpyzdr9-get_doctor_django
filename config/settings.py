@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'user.apps.UserConfig',
+    'patients_login.apps.PatientLoginConfig',
 ]
 
 MIDDLEWARE = [
@@ -118,3 +119,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 AUTH_USER_MODEL = "user.User"
+
+LOGIN_URL = 'patients_login'
+LOGIN_REDIRECT_URL = 'patients_login_dashboard'
+LOGOUT_REDIRECT_URL = 'patients_login'
