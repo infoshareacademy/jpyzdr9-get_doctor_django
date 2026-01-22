@@ -25,3 +25,9 @@ class User(AbstractUser):
     emergency_contact = models.CharField(max_length=15, blank=True)
     blood_type = models.CharField(max_length=5, blank=True)
     allergies = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"{self.username} ({self.get_role_display()})"
+
+    class Meta:
+        db_table = 'users'
