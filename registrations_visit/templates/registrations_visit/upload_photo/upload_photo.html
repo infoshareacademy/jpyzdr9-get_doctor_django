@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Dodaj zdjęcie dla {{ doctor.first_name }} {{ doctor.last_name }}</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Dodaj</button>
+        </form>
+
+    {% if doctor.photo %}
+        <h2>Zdjęcie:</h2>
+        <img src="{{ doctor.photo.url }}" alt="{{ doctor.first_name }} {{ doctor.last_name }}" width="200">
+    {% endif %}
+</body>
+</html>

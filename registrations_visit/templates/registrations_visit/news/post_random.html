@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>post-random</title>
+</head>
+<body>
+
+{% if random_post %}
+<div class="random_news">
+    <h3>{{ random_post.title|truncatechars:30 }}</h3>
+    <p>{{ random_post.content|truncatewords:20 }}</p>
+    <a href="{% url 'post_detail' random_post.pk %}">Czytaj dalej</a>
+</div>
+{% else %}
+<p>Brak dostępnych wiadomości</p>
+{% endif %}
+</body>
+</html>

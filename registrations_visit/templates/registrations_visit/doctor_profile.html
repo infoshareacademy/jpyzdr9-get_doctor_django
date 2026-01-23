@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ doctor.specialization }} {{ doctor.first_name }} {{ doctor.last_name }}</title>
+</head>
+<body>
+
+<h1>{{ doctor.first_name }} {{ doctor.last_name }}</h1>
+<p>Specializacja: {{ doctor.specialization }}</p>
+<p>Email: {{ doctor.email }}</p>
+<p>Telefon: {{ doctor.phone_number }}</p>
+<p>Języki: {{ doctor.languages }}</p>
+
+{% if doctor.photo %}
+    <img src="{{ doctor.photo.url }}" width="200" style="border-radius: 10%;>
+{% else %}
+    <p>No photo available</p>
+{% endif %}
+
+    {% include 'registrations_visit/doctor_detail.html' %}
+
+<p><a href="{% url 'specializations_list' %}">Powrót do wyboru specjalizacji</a></p>
+<p><a href="{% url 'menu_reservations' %}">Powrót do menu rezerwacji</a></p>
+
+</body>
+</html>
