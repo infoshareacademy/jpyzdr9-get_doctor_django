@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Appointment</title>
+</head>
+<body>
+<h2>Moje wizyty</h2>
+
+{% if appointments %}
+    <ol>
+        {% for appointment in appointments %}
+            <li>
+                <p>Pacjent: {{ appointment.patient.get_full_name|default:appointment.patient.username }}</p>
+                <p>Lekarz: {{ appointment.slot.doctor.get_full_name|default:appointment.slot.doctor.username }}</p>
+                <p>Data: {{ appointment.slot.start_datetime|date:"d.m.Y" }}</p>
+                <p>Godzina: {{ appointment.slot.start_datetime|date:"H:i" }} - {{ appointment.slot.end_datetime|date:"H:i" }}</p>
+
+            </li>
+            <hr>
+        {% endfor %}
+    </ol>
+{% else %}
+    <p>Brak zaplanowanych wizyt.</p>
+{% endif %}
+
+</body>
+</html>
