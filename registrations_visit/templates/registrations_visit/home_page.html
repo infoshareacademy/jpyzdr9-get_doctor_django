@@ -1,147 +1,197 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Główna strona.get_doctor</title>
-    <meta charset="UTF-8" /> {% load static %}
-    <link rel="stylesheet" href="{% static 'css/home_page_style.css' %}" />
-    <link href="https://fonts.googleapis.com/css2?family=Open Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <div class="container">
-      <header>
-        <div class="navbar">
-          <div class="current-date">
-            {{ today|date:"j F Y" }}
-          </div>
-          <ul>
-            <li>
-              <a href="#">Zarejestruj się darmo</a>
-            </li>
-            <li>
-              <a href="#">Załoguj się </a>
-            </li>
-          </ul>
+<html lang="pl">
+
+<head>
+  <title>Główna strona.get_doctor</title>
+  <meta charset="UTF-8" /> {% load static %}
+  <link rel="stylesheet" href="{% static 'css/home_page_style1.css' %}" />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div class="navbar">
+        <div class="current-date">
+          {{ today|date:"j F Y" }}
         </div>
-        <div class="top">
-          <div class="logo">
-            <img src="{% static 'resources/logo/icons8.png' %}" alt="logo" />
-            <div>
-              <p>
-                <span>Klinika</span>
-                <span>get_Doctor</span>
-              </p>
-              <p>Nowoczesna medycyna, ludzka troska</p>
-            </div>
-          </div>
-          <form action="" method="post">
-            <input type="text" placeholder="" />
-            <button type="submit">Szukaj</button>
-          </form>
-        </div>
-        <div class="banner">
+        <ul>
+          {% if user.is_authenticated %}
+          <span class="user-name">{{ user.first_name }} {{ user.last_name }}</span>
+          <li class="dropdown">
+
+            <a href="#" class="profile-link">Mój profil ▾</a>
+            <ul class="dropdown-menu">
+              <li><a href="{% url 'patient:profile' %}">Dane osobowe</a></li>
+              <li><a href="{% url 'visit:specializations_list' %}">Umów wizitę</a></li>
+              <li><a href="{% url 'booking:appointment' %}">Moje wizyty</a></li>
+              <li><a href="{% url 'patient:logout' %}">Wyloguj się</a></li>
+            </ul>
+          </li>
+          {% else %}
+          <li><a href="#">Zarejestruj się darmo</a></li>
+          <li><a href="{% url 'patient:login' %}">Załoguj się</a></li>
+          {% endif %}
+        </ul>
+      </div>
+
+      <div class="top">
+        <div class="logo">
+          <img src="{% static 'resources/logo/icons8.png' %}" alt="logo" />
           <div>
-            <p>Zdrowie</p>
-            <p>zaczyna się <span>tutaj</span>
-            </p>
+            <p><span>Klinika</span> <span>getDoctor</span></p>
+            <p>Nowoczesna medycyna, ludzka troska</p>
           </div>
         </div>
-        <nav>
+        <form action="" method="post">
+          <input type="text" placeholder="" />
+          <button type="submit">Szukaj</button>
+        </form>
+      </div>
+
+      <div class="banner">
+        <div>
+          <p>Zdrowie</p>
+          <p>zaczyna się <span>tutaj</span></p>
+        </div>
+      </div>
+
+      {% if not user.is_authenticated %}
+      <nav>
+        <ul>
+          <li><a href="{% url 'visit:general_information' %}">O nas</a></li>
+          <li><a href="{% url 'booking:prices_and_services' %}">Usługi i Ceny</a></li>
+          <li><a href="{% url 'visit:service_unavailable' %}">Oferty pracy</a></li>
+          <li><a href="{% url 'visit:service_unavailable' %}">Kontakt</a></li>
+          <li><a href="{% url 'visit:service_unavailable' %}">Opinie</a></li>
+        </ul>
+      </nav>
+
+      <div class="spec">
+        <nav class="navigation">
           <ul>
-            <li>
-              <a href="#">Strona główna</a>
-            </li>
-            <li>
-              <a href="#">O nas</a>
-            </li>
-            <li>
-              <a href="#">Usługi</a>
-            </li>
-            <li>
-              <a href="#">Oferty pracy</a>
-            </li>
-            <li>
-              <a href="#">Kontakt</a>
-            </li>
-            <li>
-              <a href="#">Opinie</a>
-            </li>
+            <li><a href="{% url 'visit:select_spec' 'chirurg' %}">Chirurg</a></li>
+            <li><a href="{% url 'visit:select_spec' 'stomatolog' %}">Stomatolog</a></li>
+            <li><a href="{% url 'visit:select_spec' 'genikolog' %}">Genikolog</a></li>
+            <li><a href="{% url 'visit:select_spec' 'neurolog' %}">Neurolog</a></li>
+            <li><a href="{% url 'visit:select_spec' 'dermatolog' %}">Dermatolog</a></li>
+            <li><a href="{% url 'visit:select_spec' 'pediatra' %}">Pediatra</a></li>
+            <li><a href="{% url 'visit:select_spec' 'kardiolog' %}">Kardiolog</a></li>
           </ul>
         </nav>
-        <div class="spec">
-          <nav class="navigation">
-            <ul>
-              <li>
-                <a href="#">Chirurg</a>
-              </li>
-              <li>
-                <a href="#">Stomatolog</a>
-              </li>
-              <li>
-                <a href="#">Genikolog</a>
-              </li>
-              <li>
-                <a href="#">Neurolog</a>
-              </li>
-              <li>
-                <a href="#">Dermatolog</a>
-              </li>
-              <li>
-                <a href="#">Pediatra</a>
-              </li>
-              <li>
-                <a href="#">Kardiolog</a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </header>
-      <h1>Witamy na naszej stronie</h1>
-      <div class="bottom_side">
-        <div class="content">
-          <div class="content_right">
-            <div class="top">
-              <p> Aby sprostać wymagającym oczekiwaniom naszych pacjentów, dążymy do wyposażenia kliniki wyłącznie w najnowocześniejszy i sprawdzony sprzęt. W naszej klinice szeroko stosowane są technologie cyfrowe, które pozwalają udoskonalić proces leczenia. Dbamy również o komfort i bezpieczeństwo każdego pacjenta, zapewniając indywidualne podejście oraz profesjonalną opiekę wykwalifikowanego personelu. Naszym celem jest, aby każda wizyta była jak najbardziej przyjazna i skuteczna. </p>
-            </div>
-            <h2>
-              <a href="{% url 'post_list' %}">Centrum wiadomości</a>
+      </div>
+      {% endif %}
+    </header>
+
+    <h1>Witamy na naszej stronie</h1>
+
+    <div class="bottom_side">
+      <div class="content">
+        <div class="content_right">
+          <div class="top">
+            <p>Aby sprostać wymagającym oczekiwaniom naszych pacjentów, dążymy do wyposażenia kliniki wyłącznie w najnowocześniejszy i sprawdzony sprzęt. W naszej klinice szeroko stosowane są technologie cyfrowe, które pozwalają udoskonalić proces leczenia. Dbamy również o komfort i bezpieczeństwo każdego pacjenta, zapewniając indywidualne podejście oraz profesjonalną opiekę wykwalifikowanego personelu. Naszym celem jest, aby każda wizyta była jak najbardziej przyjazna i skuteczna.</p>
+          </div>
+
+          <h2>
+                <a href="{% url 'visit:post_list' %}">Centrum wiadomości</a>
             </h2>
-            <div class="news"> {% for post in random_posts %} <div class="random_news">
-                <h4>
-                  <a href="{% url 'post_detail' post.pk %}" class="post-link">
-                    {{ post.title|truncatewords:10 }}
-                  </a>
-                </h4>
-                <p>{{ post.content|truncatewords:17 }}</p>
-              </div> {% empty %} <p>Brak wiadomości</p> {% endfor %} </div>
+          <div class="news">
+            {% for post in random_posts %}
+            <div class="random_news">
+              <h4>
+                        <a href="{% url 'visit:post_detail' post.pk %}" class="post-link">{{ post.title|truncatewords:10 }}</a>
+                    </h4>
+              <p>{{ post.content|truncatewords:17 }}</p>
+            </div>
+            {% empty %}
+            <p class="server-unavailable">Server czasowo nie dostępny</p>
+            {% endfor %}
           </div>
         </div>
-      <hr>
-        <footer class="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="collumn">
-                        <h3 class="footer_title">Serwis</h3>
-                        <ul>
-                            <li><a href="#" class="text">Polityka prywatności i plików Cookies</a> </li>
-                            <li><a href="#" class="text">Edytuj ustawienia</a> </li>
-                            <li><a href="#" class="text">Polityka prywatności dla pracowników ochrony zdrowia</a> </li>
-                            <li><a href="#" class="text">O nas</a> </li>
-                            <li><a href="#" class="text">Kontakt</a> </li>
-                            <li><a href="#" class="text">Praca</a> </li>
-                            <li><a href="#" class="text">Regulamin</a> </li>
-                            <li><a href="#" class="text">Partnerzy</a> </li>
-                            <li><a href="#" class="text">Centrum prasowe</a> </li>
-                            <li><a href="#" class="text">Jak działają wyniki wyszukiwania</a> </li>
-                            <li><a href="#" class="text">Dostępność</a> </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </footer>
       </div>
     </div>
-  </body>
+
+    <hr>
+
+    <footer class="footer">
+      <div class="container footer-container">
+        <div class="row footer-row">
+          <div class="column">
+            <h3 class="footer_title">Serwis</h3>
+            <ul>
+              <li><a href="{% url 'visit:service_unavailable' %}" class="text">Polityka prywatności i plików Cookies</a></li>
+              <li><a href="{% url 'visit:service_unavailable' %}" class="text">Edytuj ustawienia</a></li>
+              <li><a href="{% url 'visit:service_unavailable' %}" class="text">Polityka prywatności dla pracowników ochrony zdrowia</a></li>
+              <li><a href="{% url 'visit:service_unavailable' %}" class="text">O nas</a></li>
+              <li><a href="{% url 'visit:service_unavailable' %}" class="text">Kontakt</a></li>
+              <li><a href="{% url 'visit:service_unavailable' %}" class="text">Praca</a></li>
+              <li><a href="{% url 'visit:service_unavailable' %}" class="text">Regulamin</a></li>
+              <li><a href="{% url 'visit:service_unavailable' %}" class="text">Partnerzy</a></li>
+              <li><a href="{% url 'visit:service_unavailable' %}" class="text">Centrum prasowe</a></li>
+              <li><a href="{% url 'visit:service_unavailable' %}" class="text">Jak działają wyniki wyszukiwania</a></li>
+              <li><a href="{% url 'visit:service_unavailable' %}" class="text">Dostępność</a></li>
+            </ul>
+          </div>
+
+          <div class="column">
+            <h3 class="footer_title">Dla pacjentów</h3>
+            <ul>
+              <li><a href="#" class="text">Lekarze</a></li>
+              <li><a href="#" class="text">Placóweki medyczne</a></li>
+              <li><a href="#" class="text">Pytania i odpowiedzi</a></li>
+              <li><a href="#" class="text">Usługi i zabiegi</a></li>
+              <li><a href="#" class="text">Choroby</a></li>
+              <li><a href="#" class="text">Pomoc</a></li>
+              <li><a href="#" class="text">Aplikacje mobilne</a></li>
+              <li><a href="#" class="text">Blog dla pacjentów</a></li>
+            </ul>
+          </div>
+
+          <div class="column">
+            <h3 class="footer_title">Dla profesjonalistów</h3>
+            <ul>
+              <li><a href="#" class="text">Cennik</a></li>
+              <li><a href="#" class="text">Dla lekarzy</a></li>
+              <li><a href="#" class="text">Centrum Pomocy dla Specjalisty</a></li>
+              <li><a href="#" class="text">Baza wiedzy</a></li>
+              <li><a href="#" class="text">Choroby</a></li>
+              <li><a href="#" class="text">Pomoc</a></li>
+              <li><a href="#" class="text">Aplikacje mobilne</a></li>
+              <li><a href="#" class="text">Blog dla pacjentów</a></li>
+            </ul>
+          </div>
+
+          <div class="column">
+            <h3 class="footer_title">
+                    <img src="{% static 'resources/logo/icons8.png' %}" alt="logo" /> getDoctor
+                </h3>
+            <address class="address">
+                    <p>
+                        getDoctor Sp. z o.o.<br>
+                        ul. Solna 55/145<br>
+                        01-252 Warszawa, Polska
+                    </p>
+                    <p>
+                        NIP: 7010224854<br>
+                        KRS: 0000347521<br>
+                        REGON: 1422785412
+                    </p>
+                </address>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <hr>
+  <div class="developer">
+    <p>Dorota Ulenberg</p>
+    <p>Jan Bolek</p>
+    <p>Kanstantsin Sushko</p>
+  </div>
+
+</body>
+
 </html>

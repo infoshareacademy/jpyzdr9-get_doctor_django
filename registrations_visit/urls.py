@@ -1,20 +1,21 @@
 from django.urls import path
-from .views import (home_page, general_info, menu_reservations,
+from .views import (home_page, general_info,
                     select_spec, doctor_profile,
-                    specializations_list, PostListView, PostDetailView, DoctorSlotsView)
+                    specializations_list, PostListView, PostDetailView, DoctorSlotsView, service_unavailable)
 
+app_name = 'visit'
 
 urlpatterns = [
-    path('home-page/', home_page, name='home_page'),
-    path('general-informations/', general_info, name='general_informations'),
-    path('menu-reservations/', menu_reservations, name='menu_reservations'),
-    path('specializations-list/', specializations_list, name='specializations_list'),
-    path('doctors/<str:specialization>/', select_spec, name='select_spec'),
-    path('doctor/<str:specialization>/<int:doctor_id>/', doctor_profile, name='doctor_profile'),
-    path('post/', PostListView.as_view(), name='post_list'),
-    path('post/<int:pk>/', PostDetailView.as_view(), name='post_detail'),
+    path('maintenance/', service_unavailable, name='service_unavailable'),
+    path('strona-główna/', home_page, name='home_page'),
+    path('informacje-ogolne/', general_info, name='general_information'),
+    path('lista-specjalizacji/', specializations_list, name='specializations_list'),
+    path('lekarze/<str:specialization>/', select_spec, name='select_spec'),
+    path('lekarz/<str:specialization>/<int:doctor_id>/', doctor_profile, name='doctor_profile'),
+    path('lekarz/<int:doctor_id>/grafik/', DoctorSlotsView.as_view(), name='doctor_detail'),
+    path('posty/', PostListView.as_view(), name='post_list'),
+    path('posty/<int:pk>/', PostDetailView.as_view(), name='post_detail'),
 
-    path('doctor-slots/<int:doctor_id>/', DoctorSlotsView.as_view(), name='doctor_detail'),
 
 
 

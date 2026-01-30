@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <title>{{ doctor.specialization }} {{ doctor.first_name }} {{ doctor.last_name }}</title>
@@ -7,21 +7,46 @@
 <body>
 
 <h1>{{ doctor.first_name }} {{ doctor.last_name }}</h1>
-<p>Specializacja: {{ doctor.specialization }}</p>
-<p>Email: {{ doctor.email }}</p>
-<p>Telefon: {{ doctor.phone_number }}</p>
-<p>Języki: {{ doctor.languages }}</p>
+<p>Specjalizacja: {{ doctor.specialization }}</p>
+<p>Email: {{ doctor.email|default:"Brak informacji"  }}</p>
+<p>Telefon: {{ doctor.phone_number|default:"Brak informacji"  }}</p>
+<p>Języki: {{ doctor.languages|default:"Brak informacji"  }}</p>
 
 {% if doctor.photo %}
-    <img src="{{ doctor.photo.url }}" width="200" style="border-radius: 10%;>
+    <p><img src="{{ doctor.photo.url }}" width="200" style="border-radius: 10%;"></p>
 {% else %}
     <p>No photo available</p>
 {% endif %}
 
-    {% include 'registrations_visit/doctor_detail.html' %}
+<hr>
+<h2>Dostępne terminy</h2>
 
-<p><a href="{% url 'specializations_list' %}">Powrót do wyboru specjalizacji</a></p>
-<p><a href="{% url 'menu_reservations' %}">Powrót do menu rezerwacji</a></p>
+{% if slots %}
+    {% regroup slots by start_datetime.date as days %}
+    {% for day in days %}
+        <h3>{{ day.grouper|date:"d.m.Y - l" }}</h3>
+        <ul>
+            {% for slot in day.list %}
+                <li>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'booking:wybierz_wizyte' slot.id %}">
+                            {{ slot.start_datetime|date:"H:i" }} - {{ slot.end_datetime|date:"H:i" }}
+                        </a>
+                    {% else %}
+                        <a href="{% url 'patient:login' %}">
+                            {{ slot.start_datetime|date:"H:i" }} - {{ slot.end_datetime|date:"H:i" }}
+                        </a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+{% else %}
+    <p>Brak dostępnych terminów</p>
+{% endif %}
+
+<p><a href="{% url 'visit:specializations_list' %}">Powrót do wyboru specjalizacji</a></p>
+<p><a href="{% url 'visit:home_page' %}">Powrót do menu rezerwacji</a></p>
 
 </body>
 </html>

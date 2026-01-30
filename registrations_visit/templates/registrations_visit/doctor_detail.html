@@ -9,12 +9,17 @@
 <h2>Dostępne terminy</h2>
 
 {% if slots %}
+<ul>
     {% for slot in slots %}
         {% ifchanged slot.start_datetime|date:"l" %}
             <h3>{{ slot.start_datetime|date:"d.m.y - l" }}</h3>
         {% endifchanged %}
+
         <li>{{ slot.start_datetime|date:"H:i" }} - {{ slot.end_datetime|date:"H:i" }}</li>
+
+
     {% endfor %}
+    </ul>
 {% else %}
     <p>Brak dostępnych terminów</p>
 {% endif %}

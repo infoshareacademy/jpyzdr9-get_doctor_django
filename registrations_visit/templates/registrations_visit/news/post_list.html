@@ -12,7 +12,7 @@
         {% for post in posts %}
             <li>
                 <h2>
-                    <a href="{% url 'post_detail' post.pk %}">
+                    <a href="{% url 'visit:post_detail' post.pk %}">
                         {{ post.title }}
                     </a>
                 </h2>

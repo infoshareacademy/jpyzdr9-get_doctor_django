@@ -1,28 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Appointment</title>
+    <title>Moje wizyty</title>
 </head>
 <body>
+
 <h2>Moje wizyty</h2>
 
-{% if appointments %}
-    <ol>
-        {% for appointment in appointments %}
-            <li>
-                <p>Pacjent: {{ appointment.patient.get_full_name|default:appointment.patient.username }}</p>
-                <p>Lekarz: {{ appointment.slot.doctor.get_full_name|default:appointment.slot.doctor.username }}</p>
-                <p>Data: {{ appointment.slot.start_datetime|date:"d.m.Y" }}</p>
-                <p>Godzina: {{ appointment.slot.start_datetime|date:"H:i" }} - {{ appointment.slot.end_datetime|date:"H:i" }}</p>
+<!-- ===== AKTUALNE WIZYTY ===== -->
+<h3>Aktualne wizyty</h3>
 
+{% if upcoming_appointments %}
+    <ol>
+        {% for appointment in upcoming_appointments %}
+            <li>
+                <p>
+                    <strong>Pacjent:</strong>
+                    {{ appointment.patient.get_full_name|default:appointment.patient.username }}
+                </p>
+
+                <p>
+                    <strong>Lekarz:</strong>
+                    {{ appointment.slot.doctor.get_full_name|default:appointment.slot.doctor.username }}
+                </p>
+
+                <p>
+                    <strong>Data:</strong>
+                    {{ appointment.slot.start_datetime|date:"d.m.Y" }}
+                </p>
+
+                <p>
+                    <strong>Godzina:</strong>
+                    {{ appointment.slot.start_datetime|date:"H:i" }}
+                    –
+                    {{ appointment.slot.end_datetime|date:"H:i" }}
+                </p>
+
+                <form
+                    action="{% url 'booking:cancel_appointment' appointment.id %}"
+                    method="post"
+                    style="display:inline;"
+                >
+                    {% csrf_token %}
+                    <button type="submit" onclick="return confirm('Czy na pewno chcesz anulować tę wizytę?');">
+                        Anuluj wizytę
+                    </button>
+                </form>
             </li>
             <hr>
         {% endfor %}
     </ol>
 {% else %}
-    <p>Brak zaplanowanych wizyt.</p>
+    <p>Brak aktualnych wizyt.</p>
 {% endif %}
+
+<h3>Poprzednie wizyty</h3>
+
+{% if past_appointments %}
+    <ol>
+        {% for appointment in past_appointments %}
+            <li>
+
+                <p>
+                    Lekarz:{{ appointment.slot.doctor.get_full_name|default:appointment.slot.doctor.username }}
+                </p>
+
+                <p>
+                    Specjalizacja:{{ appointment.slot.doctor.specialization }}
+                </p>
+
+                <p>
+                    Data:{{ appointment.slot.start_datetime|date:"d.m.Y" }}
+                </p>
+
+                <p>
+                    Godzina: {{ appointment.slot.start_datetime|date:"H:i" }} – {{ appointment.slot.end_datetime|date:"H:i" }}
+                </p>
+
+                <p>Wizyta zakończona</p>
+            </li>
+            <hr>
+        {% endfor %}
+    </ol>
+{% else %}
+    <p>Brak poprzednich wizyt.</p>
+{% endif %}
+
+<br>
+
+<a href="{% url 'visit:home_page' %}">Wróć do strony głównej</a>
 
 </body>
 </html>

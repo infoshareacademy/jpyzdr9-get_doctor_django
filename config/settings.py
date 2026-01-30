@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'user.apps.UserConfig',
     'registrations_visit.apps.RegistrationsVisitConfig',
     'booking.apps.BookingConfig',
+    'patients_login.apps.PatientLoginConfig',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -78,7 +80,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3_version2',
     }
 }
 
@@ -122,3 +124,7 @@ AUTH_USER_MODEL = "user.User"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+LOGIN_URL = 'patients_login'
+LOGIN_REDIRECT_URL = 'patients_login_dashboard'
+LOGOUT_REDIRECT_URL = 'patients_login'
