@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ specialization|capfirst }}</title>
+</head>
+<body>
+    <h1>Lista lekarzy: {{ specialization }}</h1>
+    {% if doctors %}
+        <ul>
+            {% for doctor in doctors %}
+                <li>
+                    <a href="{% url 'visit:doctor_profile' doctor.specialization doctor.id %}">
+                        {{ doctor.first_name }} {{ doctor.last_name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Brak lekarzy w tej specjalizacji.</p>
+    {% endif %}
+    <p><a href="{% url 'visit:specializations_list' %}">Powrót do wyboru specjalizacji</a></p>
+    <p><a href="{% url 'visit:home_page' %}">Powrót do menu rezerwacji</a></p>
+</body>
+</html>

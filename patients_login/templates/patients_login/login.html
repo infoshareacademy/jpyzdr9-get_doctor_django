@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <title>Logowanie Pacjenta | get_Doctor</title>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/login_style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<div class="container">
+    <header>
+        <div class="top login-top">
+            <div class="logo">
+                <img src="{% static 'resources/logo/icons8.png' %}" alt="logo">
+                <div class="clinic-title">
+                    <p class="clinic-link"><a href="{% url 'visit:home_page' %}"><span>Klinika</span> <span>get_Doctor</span></a></p>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="login-container">
+        <h1>Logowanie Pacjenta</h1>
+
+        {% if messages %}
+            {% for message in messages %}
+                <p class="message {{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <p>
+                    {{ field.label_tag }}<br>
+                    {{ field }}
+                    {% if field.errors %}
+                        <span class="field-error">{{ field.errors|striptags }}</span>
+                    {% endif %}
+                </p>
+            {% endfor %}
+            <button type="submit">Zaloguj się</button>
+        </form>
+
+    </div>
+
+</div>
+</body>
+</html>
