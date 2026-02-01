@@ -7,6 +7,8 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from .forms import PatientProfileForm
 from django.contrib.auth import get_user_model
+import logging
+logger = logging.getLogger(__name__)
 
 User = get_user_model()
 
@@ -14,7 +16,7 @@ User = get_user_model()
 class PatientLoginView(FormView):
     form_class = AuthenticationForm
     template_name = 'patients_login/login.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('visit:home_page')
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -23,8 +25,9 @@ class PatientLoginView(FormView):
 
     def form_valid(self, form):
         user = form.get_user()
-
+        logger.info(user)
         if user.role == 'patient':
+            logger.info('Informacja')
             login(self.request, user)
             messages.success(self.request, f'Witaj {user.get_full_name()}!')
             return super().form_valid(form)
