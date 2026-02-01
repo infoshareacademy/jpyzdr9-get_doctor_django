@@ -128,3 +128,26 @@ MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_URL = 'patients_login'
 LOGIN_REDIRECT_URL = 'patients_login_dashboard'
 LOGOUT_REDIRECT_URL = 'patients_login'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'file_logs_django.log'
+        },
+        'stream': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        }
+    },
+    'loggers': {
+        '': {
+            'handlers': ['file', 'stream'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
