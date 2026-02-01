@@ -27,7 +27,7 @@ class User(AbstractUser):
     allergies = models.TextField(blank=True)
 
     def __str__(self):
-        return f"{self.username} ({self.get_role_display()})"
+        return f"{self.username}"
 
     class Meta:
         db_table = 'users'
