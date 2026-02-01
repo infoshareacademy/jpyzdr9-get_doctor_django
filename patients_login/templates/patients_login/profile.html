@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Moje konto</title>
+</head>
+<body>
+    <h1>Moje konto</h1>
+    <p><a href="{% url 'home' %}">← Powrót do strony głównej</a></p>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p style="color: {% if message.tags == 'error' %}red{% elif message.tags == 'success' %}green{% else %}blue{% endif %};">
+                {{ message }}
+            </p>
+        {% endfor %}
+    {% endif %}
+
+    <h2>Twoje Dane Osobowe</h2>
+    <p><strong>Imię i Nazwisko:</strong> {{ user.get_full_name }}</p>
+    <p><strong>PESEL:</strong> {{ user.pesel }}</p>
+    <p><strong>Płeć:</strong> {{ user.get_sex_display }}</p>
+    <p><strong>Data urodzenia:</strong> {{ patient.date_of_birth|default:"Nie podano" }}</p>
+
+    <hr>
+
+    <h2>Dane Kontaktowe</h2>
+    <p><strong>Telefon:</strong> {{ user.phone_number }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Adres:</strong> {{ patient.address|default:"Nie podano" }}</p>
+    <p><strong>Kontakt awaryjny:</strong> {{ patient.emergency_contact|default:"Nie podano" }}</p>
+
+    <hr>
+
+    <h2>Informacje Medyczne</h2>
+    <p><strong>Grupa krwi:</strong> {{ patient.blood_type|default:"Nie podano" }}</p>
+    <p><strong>Alergie:</strong> {{ patient.allergies|default:"Brak" }}</p>
+
+    <hr>
+
+    <h2>Edytuj profil</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Zapisz zmiany</button>
+    </form>
+</body>
+</html>

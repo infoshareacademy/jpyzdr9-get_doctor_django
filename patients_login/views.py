@@ -14,7 +14,7 @@ User = get_user_model()
 class PatientLoginView(FormView):
     form_class = AuthenticationForm
     template_name = 'patients_login/login.html'
-    success_url = reverse_lazy('visit:home_page')
+    success_url = reverse_lazy('home')
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -26,17 +26,17 @@ class PatientLoginView(FormView):
 
         if user.role == 'patient':
             login(self.request, user)
-            # messages.success(self.request, f'Witaj {user.get_full_name()}!')
+            messages.success(self.request, f'Witaj {user.get_full_name()}!')
             return super().form_valid(form)
         else:
-            # messages.error(self.request, 'To konto nie jest kontem pacjenta.')
+            messages.error(self.request, 'To konto nie jest kontem pacjenta.')
             return self.form_invalid(form)
 
 
 class PatientLogoutView(View):
     def get(self, request, *args, **kwargs):
         logout(request)
-        # messages.info(request, 'Zostałeś wylogowany.')
+        messages.info(request, 'Zostałeś wylogowany.')
         return redirect('visit:home_page')
 
 

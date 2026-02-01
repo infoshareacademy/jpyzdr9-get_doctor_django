@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     ROLE_CHOICES = [
         ('doctor', 'Doctor'),
-        ('patients_login', 'Patient'),
+        ('patient', 'Patient'),
         ('admin', 'Admin'),
     ]
     #role = models.CharField(max_length=20, choices=ROLE_CHOICES)
@@ -26,8 +26,8 @@ class User(AbstractUser):
     blood_type = models.CharField(max_length=5, blank=True)
     allergies = models.TextField(blank=True)
 
-    # def __str__(self):
-    #     return f"{self.username} ({self.get_role_display()})"
+    def __str__(self):
+        return f"{self.username} ({self.get_role_display()})"
 
     class Meta:
         db_table = 'users'
