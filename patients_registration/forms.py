@@ -53,7 +53,7 @@ class PatientRegistrationForm(BaseUserCreationForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.role = 'patients_login'
+        user.role = 'patient'
 
         if commit:
             user.save()
