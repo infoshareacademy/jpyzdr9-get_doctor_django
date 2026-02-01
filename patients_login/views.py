@@ -6,6 +6,9 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib import messages
 from .forms import PatientProfileForm
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class PatientLoginView(FormView):
@@ -15,7 +18,7 @@ class PatientLoginView(FormView):
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect('home')
+            return redirect('visit:home_page')
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -34,12 +37,12 @@ class PatientLogoutView(View):
     def get(self, request, *args, **kwargs):
         logout(request)
         messages.info(request, 'Zostałeś wylogowany.')
-        return redirect('home')
+        return redirect('visit:home_page')
 
 
 class PatientProfileView(LoginRequiredMixin, UpdateView):
     form_class = PatientProfileForm
-    template_name = 'patients_login/profile.html'
+    template_name = 'patients_login/patient_profile.html'
     success_url = reverse_lazy('patient:profile')
     login_url = reverse_lazy('patient:login')
 

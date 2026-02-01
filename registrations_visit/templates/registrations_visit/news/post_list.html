@@ -1,0 +1,29 @@
+<!-- blog/templates/blog/post_list.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blog - Lista postów</title>
+</head>
+<body>
+    <h1>Wszystkie posty</h1>
+
+    {% if posts %}
+        <ul>
+        {% for post in posts %}
+            <li>
+                <h2>
+                    <a href="{% url 'visit:post_detail' post.pk %}">
+                        {{ post.title }}
+                    </a>
+                </h2>
+                <p>Autor: {{ post.author.username }}</p>
+                <p>{{ post.published_date|date:"d.m.Y H:i" }}</p>
+                <p>{{ post.content|truncatewords:30 }}</p>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Brak postów.</p>
+    {% endif %}
+</body>
+</html>

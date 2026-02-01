@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Znajdź lekarza i umów wizytę</title>
+</head>
+<body>
+    <h1>Znajdź lekarza i umów wizytę</h1>
+
+     <ul>
+            <li><a href="{% url 'visit:select_spec' 'chirurg' %}"">Chirurg</a></li>
+            <li><a href="{% url 'visit:select_spec' 'stomatolog' %}"">Stomatolog</a></li>
+            <li><a href="{% url 'visit:select_spec' 'genikolog' %}"">Genikolog</a></li>
+            <li><a href="{% url 'visit:select_spec' 'neurolog' %}"">Neurolog</a></li>
+            <li><a href="{% url 'visit:select_spec' 'dermatolog' %}"">Dermatolog</a></li>
+            <li><a href="{% url 'visit:select_spec' 'pediatra' %}"">Pediatra</a></li>
+            <li><a href="{% url 'visit:select_spec' 'kardiolog' %}">Kardiolog</a></li>
+          </ul>
+
+    <p><a href="{% url 'visit:home_page' %}">Powrót do menu rezerwacji</a></p>
+</body>
+</html>

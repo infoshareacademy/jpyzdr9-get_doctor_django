@@ -1,0 +1,156 @@
+/* ===== LOGIN PAGE STYLE ===== */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background: whitesmoke;
+}
+
+.container {
+    padding: 10px 20px;
+}
+
+/* ===== TOP BAR (ЛОГО + ГЛАВНАЯ) ===== */
+.login-top {
+    display: flex;
+    align-items: center;
+    background: #417690;
+    padding: 15px;
+    border-radius: 10px;
+    color: wheat;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 60px;
+    height: 60px;
+    margin-right: 15px;
+}
+
+.clinic-title p {
+    margin: 0;
+    color: wheat;
+    font-weight: bold;
+}
+
+/* ✅ УБИРАЕМ ПОДЧЁРКИВАНИЕ У ССЫЛКИ В ШАПКЕ */
+.clinic-title a {
+    text-decoration: none;
+    color: wheat;
+}
+
+.clinic-title a:hover {
+    text-decoration: none;
+}
+
+.clinic-title p span:last-child {
+    color: #fff;
+}
+
+.clinic-title .home-page {
+    font-size: 18px;
+    font-weight: normal;
+    margin-top: 5px;
+}
+
+/* ===== LOGIN FORM ===== */
+.login-container {
+    max-width: 450px;
+    margin: 30px auto;
+    background: #417690;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    color: wheat;
+}
+
+.login-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 28px;
+}
+
+.login-container form p {
+    margin-bottom: 15px;
+}
+
+.login-container input {
+    width: 94%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 3px solid darkslategray;
+    font-size: 16px;
+    outline: none;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: 3px solid darkslategray;
+    background: #6f94c6;
+    color: wheat;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.login-container button:hover {
+    background: #5a7fb0;
+}
+
+/* ===== MESSAGES ===== */
+.message {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.message.error {
+    color: #ffb3b3;
+}
+
+.message.success {
+    color: #b3ffb3;
+}
+
+.field-error {
+    color: #ffcccc;
+    font-size: 14px;
+}
+
+/* ===== LINKS BELOW FORM ===== */
+.login-links {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.login-links a {
+    color: wheat;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-links a:hover {
+    text-decoration: underline;
+}
+
+/* ===== BACK LINK ===== */
+.back-link {
+    display: block;
+    margin-top: 15px;
+    text-align: center;
+    color: wheat;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
