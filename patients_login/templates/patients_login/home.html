@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Strona główna - Przychodnia</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/home_style.css' %}">
+</head>
+<body>
+
+
+<div class="top-bar">
+    <div class="current-date">
+        {{ today|date:"j F Y, H:i" }}
+    </div>
+
+    <div class="user-name-bar">
+        {{ user.get_full_name|default:user.username }}
+    </div>
+</div>
+
+<div class="user-links-block">
+    <a href="{% url 'visit:specializations_list' %}">Lekarze</a>
+    <a href="{% url 'booking:price_list' %}">Cennik</a>
+    <a href="{% url 'patient:profile' %}">Moje konto</a>
+    <a href="{% url 'booking:appointment' %}">Moje wizyty</a>
+    <a href="{% url 'patient:logout' %}">Wyloguj się</a>
+</div>
+
+<div class="logo-bar">
+    <img src="{% static 'resources/logo/icons8.png' %}" alt="logo">
+    <div class="clinic-name">
+        <p><span>Klinika</span> <span>get_Doctor</span></p>
+        <p>Profesjonalna opieka zdrowotna</p>
+    </div>
+</div>
+<main>
+    <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+</main>
+
+</body>
+</html>
