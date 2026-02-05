@@ -16,7 +16,7 @@
                         {{ post.title }}
                     </a>
                 </h2>
-                <p>Autor: {{ post.author.username }}</p>
+                <p>Autor: {{ post.author.get_full_name }}</p>
                 <p>{{ post.published_date|date:"d.m.Y H:i" }}</p>
                 <p>{{ post.content|truncatewords:30 }}</p>
             </li>
