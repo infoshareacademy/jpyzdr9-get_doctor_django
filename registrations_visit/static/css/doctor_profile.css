@@ -1,0 +1,116 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.page-header {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #417690;
+    color: wheat;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.page-header h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.main-content {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+.doctor-container {
+    display: flex;
+    gap: 40px;
+    border: 2px solid #417690;
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 20px;
+}
+
+.doctor-info {
+    width: 300px;
+}
+
+
+.doctor-photo {
+    width: 100%;
+    border-radius: 10%;
+    margin-bottom: 15px;
+}
+
+.no-photo {
+    width: 100%;
+    height: 200px;
+    background-color: #ddd;
+    border-radius: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.doctor-info p {
+    margin: 8px 0;
+    font-size: 16px;
+    color: dimgray;
+}
+
+.doctor-slots {
+    flex-grow: 1;
+}
+
+.doctor-slots h2 {
+    margin-top: 50px;
+}
+
+.doctor-slots h3 {
+    margin-bottom: 5px;
+    margin-top: 20px;
+}
+
+.doctor-slots ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+}
+
+.doctor-slots li {
+    margin-bottom: 8px;
+}
+
+.doctor-slots a {
+    text-decoration: none;
+    color: #417690;
+    font-weight: bold;
+}
+
+.footer-buttons {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer-buttons .back-link {
+    background-color: #fff;
+    border: 2px solid #417690;
+    border-radius: 8px;
+    padding: 10px 15px;
+    text-align: center;
+}
+
+.footer-buttons .back-link a {
+    text-decoration: none;
+    color: #417690;
+    font-weight: bold;
+}

@@ -1,0 +1,100 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: whitesmoke;
+    font-family: Roboto, Arial, sans-serif;
+    color: #333;
+}
+
+.header-block {
+    width: 80%;
+    margin: 40px auto;
+    padding: 20px;
+    background: #417690;
+    border-radius: 12px;
+}
+
+.header-block h1 {
+    margin: 0;
+    color: wheat;
+    font-size: 28px;
+}
+
+.content-wrapper {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    gap: 40px;
+}
+
+.info-block {
+    width: 40%;
+    background: #417690;
+    padding: 25px;
+    border-radius: 15px;
+    color: wheat;
+}
+
+.info-block h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.info-block p {
+    margin: 8px 0;
+}
+
+.form-block {
+    width: 40%;
+    background: #417690;
+    padding: 25px;
+    border-radius: 15px;
+    color: wheat;
+}
+
+.form-block h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+/* ===== ФОРМА ===== */
+.form-block form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-block select {
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid darkslategray;
+    font-size: 16px;
+}
+
+.form-block button {
+    align-self: flex-end;
+    padding: 12px 22px;
+    border-radius: 8px;
+    border: 2px solid darkslategray;
+    background: #6f94c6;
+    color: wheat;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.back-wrapper {
+    width: 80%;
+    margin: 60px auto 40px auto;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.back-wrapper a {
+    padding: 12px 20px;
+    border: 2px solid #417690;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #417690;
+    font-weight: bold;
+    background: white;
+}
