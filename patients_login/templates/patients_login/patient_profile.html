@@ -17,20 +17,20 @@
             <h2>Twoje Dane Osobowe</h2>
             <p  class="font"><strong>Imię i Nazwisko:</strong> {{ user.get_full_name }}</p>
             <p  class="font"><strong>PESEL:</strong> {{ user.pesel }}</p>
-            <p  class="font"><strong>Płeć:</strong> {{ user.get_sex_display }}</p>
+            <p  class="font"><strong>Płeć:</strong> {{ user.get_sex_display|default:"Nie podano" }}</p>
             <p  class="font"><strong>Data urodzenia:</strong> {{ patient.date_of_birth|default:"Nie podano" }}</p>
         </div>
         <div class="info-block">
             <h2>Dane Kontaktowe</h2>
-            <p class="font"><strong>Telefon:</strong> {{ user.phone_number }}</p>
-            <p class="font"><strong>Email:</strong> {{ user.email }}</p>
+            <p class="font"><strong>Telefon:</strong> {{ user.phone_number|default:"Nie podano" }}</p>
+            <p class="font"><strong>Email:</strong> {{ user.email|default:"Nie podano" }}</p>
             <p class="font"><strong>Adres:</strong> {{ patient.address|default:"Nie podano" }}</p>
             <p class="font"><strong>Kontakt awaryjny:</strong> {{ patient.emergency_contact|default:"Nie podano" }}</p>
         </div>
         <div class="info-block">
             <h2>Informacje Medyczne</h2>
             <p class="font"><strong>Grupa krwi:</strong> {{ patient.blood_type|default:"Nie podano" }}</p>
-            <p class="font"><strong>Alergie:</strong> {{ patient.allergies|default:"Brak" }}</p>
+            <p class="font"><strong>Alergie:</strong> {{ patient.allergies|default:"Nie podano"}}</p>
         </div>
     </div>
     <div class="right-column">

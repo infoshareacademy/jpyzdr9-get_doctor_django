@@ -38,8 +38,17 @@ class BaseUserCreationForm(forms.ModelForm):
         return user
 
 class PatientRegistrationForm(BaseUserCreationForm):
+    first_name = forms.CharField(label='Imię', max_length=150)
+    last_name = forms.CharField(label='Nazwisko', max_length=150)
+
     class Meta(BaseUserCreationForm.Meta):
-        fields = BaseUserCreationForm.Meta.fields + [
+        fields = [
+            'username',
+            'first_name',
+            'last_name',
+            'pesel',
+            'password1',
+            'password2',
             'date_of_birth',
             'address',
             'emergency_contact',
@@ -47,14 +56,32 @@ class PatientRegistrationForm(BaseUserCreationForm):
             'allergies',
         ]
 
+        labels = {
+            'username': 'Nazwa użytkownika',
+            'first_name': 'Imię',
+            'last_name': 'Nazwisko',
+            'pesel': 'PESEL',
+            'password1': 'Hasło',
+            'password2': 'Powtórz hasło',
+            'date_of_birth': 'Data urodzenia',
+            'address': 'Adres',
+            'emergency_contact': 'Kontakt awaryjny',
+            'blood_type': 'Grupa krwi',
+            'allergies': 'Alergie',
+        }
+
         help_texts = {
             'username': None,
+            'password1': None,
+            'password2': None,
         }
 
     def save(self, commit=True):
         user = super().save(commit=False)
         user.role = 'patient'
-
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
         if commit:
             user.save()
         return user
+
