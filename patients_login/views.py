@@ -52,7 +52,7 @@ class PatientLogoutView(View):
         logout(request)
         logger.info(f'Patient {user.username} logout')
         messages.info(request, 'Zostałeś wylogowany.')
-        return redirect('visit:home_page')
+        return redirect('patient:login')
 
 
 class PatientProfileView(LoginRequiredMixin, UpdateView):
