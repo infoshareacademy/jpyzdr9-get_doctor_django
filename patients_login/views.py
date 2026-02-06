@@ -25,22 +25,34 @@ class PatientLoginView(FormView):
 
     def form_valid(self, form):
         user = form.get_user()
-        logger.info(user)
+        logger.info(f"User login: username={user.username}, email={user.email}, id={user.id}")
         if user.role == 'patient':
-            logger.info('Informacja')
             login(self.request, user)
-            messages.success(self.request, f'Witaj {user.get_full_name()}!')
+            logger.info(f'Patient login successful: {user.username} ({user.pk})')
             return super().form_valid(form)
         else:
-            messages.error(self.request, 'To konto nie jest kontem pacjenta.')
+            messages.error(
+                self.request,
+                'To konto nie jest kontem pacjenta.'
+            )
             return self.form_invalid(form)
+
+    def form_invalid(self, form):
+        logger.warning(f'Failed login attempt: {self.request.POST.get("username")}')
+        messages.error(
+            self.request,
+            'Nieprawidłowy login lub hasło.'
+        )
+        return super().form_invalid(form)
 
 
 class PatientLogoutView(View):
     def get(self, request, *args, **kwargs):
+        user = request.user
         logout(request)
+        logger.info(f'Patient {user.username} logout')
         messages.info(request, 'Zostałeś wylogowany.')
-        return redirect('visit:home_page')
+        return redirect('patient:login')
 
 
 class PatientProfileView(LoginRequiredMixin, UpdateView):
@@ -69,21 +81,3 @@ class PatientProfileView(LoginRequiredMixin, UpdateView):
         return context
 
 
-class PatientAppointmentsView(LoginRequiredMixin, TemplateView):
-    template_name = 'patients_login/appointments.html'
-    login_url = reverse_lazy('patient:login')
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated and request.user.role != 'patient':
-            messages.error(request, 'Brak dostępu')
-            return redirect('home')
-        return super().dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['patient'] = self.request.user
-        return context
-
-
-class HomeView(TemplateView):
-    template_name = 'patients_login/home.html'

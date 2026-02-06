@@ -1,29 +1,34 @@
-<!-- blog/templates/blog/post_list.html -->
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Blog - Lista postów</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/post_list.css' %}">
 </head>
 <body>
-    <h1>Wszystkie posty</h1>
+    <h1>Nasze wiadomości</h1>
 
-    {% if posts %}
-        <ul>
-        {% for post in posts %}
-            <li>
-                <h2>
-                    <a href="{% url 'visit:post_detail' post.pk %}">
-                        {{ post.title }}
-                    </a>
-                </h2>
-                <p>Autor: {{ post.author.username }}</p>
-                <p>{{ post.published_date|date:"d.m.Y H:i" }}</p>
-                <p>{{ post.content|truncatewords:30 }}</p>
-            </li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>Brak postów.</p>
-    {% endif %}
+{% if posts %}
+    {% for post in posts %}
+        <div class="post-block">
+            <h2>
+                <a href="{% url 'visit:post_detail' post.pk %}">
+                    {{ post.title }}
+                </a>
+            </h2>
+            <p class="autor">Autor: {{ post.author.get_full_name }}</p>
+            <p class="autor">{{ post.published_date|date:"d.m.Y H:i" }}</p>
+            <p>{{ post.content|truncatewords:30 }}</p>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Brak postów.</p>
+{% endif %}
+
+<div class="back-link">
+    <a href="{% url 'visit:home_page' %}">Powrót do menu rezerwacji</a>
+</div>
+
 </body>
 </html>

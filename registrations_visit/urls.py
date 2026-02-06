@@ -7,15 +7,14 @@ app_name = 'visit'
 
 urlpatterns = [
     path('maintenance/', service_unavailable, name='service_unavailable'),
-    path('home-page/', home_page, name='home_page'),
-    path('general-information/', general_info, name='general_information'),
-    path('specializations-list/', specializations_list, name='specializations_list'),
+    path('home/', home_page, name='home_page'),
+    path('general-info/', general_info, name='general_information'),
+    path('specializations/', specializations_list, name='specializations_list'),
     path('doctors/<str:specialization>/', select_spec, name='select_spec'),
-    path('doctor-profile/<str:specialization>/<int:doctor_id>/', doctor_profile, name='doctor_profile'),
-    path('doctor-detail/<int:doctor_id>/grafik/', DoctorSlotsView.as_view(), name='doctor_detail'),
-    path('post-list/', PostListView.as_view(), name='post_list'),
-    path('post-detail/<int:pk>/', PostDetailView.as_view(), name='post_detail'),
-
+    path('doctor/<str:specialization>/<int:doctor_id>/', doctor_profile, name='doctor_profile'),
+    path('doctor/<int:doctor_id>/schedule/', DoctorSlotsView.as_view(), name='doctor_detail'),
+    path('posts/', PostListView.as_view(), name='post_list'),
+    path('posts/<int:pk>/', PostDetailView.as_view(), name='post_detail'),
 
 
 

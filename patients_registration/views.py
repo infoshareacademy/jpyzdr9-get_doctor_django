@@ -8,7 +8,8 @@ def register_patient(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('patients_login:login')
+            return redirect('visit:home_page')
+
     else:
         form = PatientRegistrationForm()
 
