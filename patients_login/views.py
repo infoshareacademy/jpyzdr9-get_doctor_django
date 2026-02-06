@@ -69,21 +69,3 @@ class PatientProfileView(LoginRequiredMixin, UpdateView):
         return context
 
 
-class PatientAppointmentsView(LoginRequiredMixin, TemplateView):
-    template_name = 'patients_login/appointments.html'
-    login_url = reverse_lazy('patient:login')
-
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated and request.user.role != 'patient':
-            messages.error(request, 'Brak dostępu')
-            return redirect('home')
-        return super().dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['patient'] = self.request.user
-        return context
-
-
-class HomeView(TemplateView):
-    template_name = 'patients_login/home.html'

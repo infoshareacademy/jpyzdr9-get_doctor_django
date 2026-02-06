@@ -1,25 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <title>{{ specialization|capfirst }}</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/select_spec.css' %}">
 </head>
 <body>
-    <h1>Lista lekarzy: {{ specialization }}</h1>
-    {% if doctors %}
-        <ul>
-            {% for doctor in doctors %}
-                <li>
-                    <a href="{% url 'visit:doctor_profile' doctor.specialization doctor.id %}">
-                        {{ doctor.first_name }} {{ doctor.last_name }}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Brak lekarzy w tej specjalizacji.</p>
-    {% endif %}
-    <p><a href="{% url 'visit:specializations_list' %}">Powrót do wyboru specjalizacji</a></p>
-    <p><a href="{% url 'visit:home_page' %}">Powrót do menu rezerwacji</a></p>
+    <header class="page-header">
+        <h1>Lista lekarzy: {{ specialization|capfirst }}</h1>
+    </header>
+    <main class="main-content">
+        <div class="doctor-list">
+            {% if doctors %}
+                <ul>
+                    {% for doctor in doctors %}
+                        <li class="doctor-item">
+                            <a href="{% url 'visit:doctor_profile' doctor.specialization doctor.id %}">
+                                {{ doctor.last_name }} {{ doctor.first_name }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Brak lekarzy w tej specjalizacji.</p>
+            {% endif %}
+        </div>
+    </main>
+    <div class="back-buttons">
+        <div class="back-link">
+            <a href="{% url 'visit:specializations_list' %}">Powrót do wyboru specjalizacji</a>
+        </div>
+        <div class="back-link">
+            <a href="{% url 'visit:home_page' %}">Powrót do menu rezerwacji</a>
+        </div>
+    </div>
 </body>
 </html>

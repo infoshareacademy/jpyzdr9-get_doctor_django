@@ -3,50 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ doctor.specialization }} {{ doctor.first_name }} {{ doctor.last_name }}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/doctor_profile.css' %}">
 </head>
 <body>
+<header class="page-header">
+    <h1>{{ doctor.first_name }} {{ doctor.last_name }}</h1>
+</header>
+<main class="main-content">
+    <div class="doctor-info">
+        {% if doctor.photo %}
+            <img src="{{ doctor.photo.url }}" alt="Photo of {{ doctor.first_name }}" class="doctor-photo">
+        {% else %}
+            <div class="no-photo">No photo available</div>
+        {% endif %}
+        <p><strong>Specjalizacja:</strong> {{ doctor.specialization }}</p>
+        <p><strong>Email:</strong> {{ doctor.email|default:"Brak informacji" }}</p>
+        <p><strong>Telefon:</strong> {{ doctor.phone_number|default:"Brak informacji" }}</p>
+        <p><strong>Języki:</strong> {{ doctor.languages|default:"Brak informacji" }}</p>
+    </div>
 
-<h1>{{ doctor.first_name }} {{ doctor.last_name }}</h1>
-<p>Specjalizacja: {{ doctor.specialization }}</p>
-<p>Email: {{ doctor.email|default:"Brak informacji"  }}</p>
-<p>Telefon: {{ doctor.phone_number|default:"Brak informacji"  }}</p>
-<p>Języki: {{ doctor.languages|default:"Brak informacji"  }}</p>
-
-{% if doctor.photo %}
-    <p><img src="{{ doctor.photo.url }}" width="200" style="border-radius: 10%;"></p>
-{% else %}
-    <p>No photo available</p>
-{% endif %}
-
-<hr>
-<h2>Dostępne terminy</h2>
-
-{% if slots %}
-    {% regroup slots by start_datetime.date as days %}
-    {% for day in days %}
-        <h3>{{ day.grouper|date:"d.m.Y - l" }}</h3>
-        <ul>
-            {% for slot in day.list %}
-                <li>
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'booking:wybierz_wizyte' slot.id %}">
-                            {{ slot.start_datetime|date:"H:i" }} - {{ slot.end_datetime|date:"H:i" }}
-                        </a>
-                    {% else %}
-                        <a href="{% url 'patient:login' %}">
-                            {{ slot.start_datetime|date:"H:i" }} - {{ slot.end_datetime|date:"H:i" }}
-                        </a>
-                    {% endif %}
-                </li>
+    <div class="doctor-slots">
+        <h2>Dostępne terminy</h2>
+        {% if slots %}
+            {% regroup slots by start_datetime.date as days %}
+            {% for day in days %}
+                <h3>{{ day.grouper|date:"d.m.Y - l" }}</h3>
+                <ul>
+                    {% for slot in day.list %}
+                        <li>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'booking:wybierz_wizyte' slot.id %}">
+                                    {{ slot.start_datetime|date:"H:i" }} - {{ slot.end_datetime|date:"H:i" }}
+                                </a>
+                            {% else %}
+                                <a href="{% url 'patient:login' %}">
+                                    {{ slot.start_datetime|date:"H:i" }} - {{ slot.end_datetime|date:"H:i" }}
+                                </a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
             {% endfor %}
-        </ul>
-    {% endfor %}
-{% else %}
-    <p>Brak dostępnych terminów</p>
-{% endif %}
+        {% else %}
+            <p>Brak dostępnych terminów</p>
+        {% endif %}
+    </div>
 
-<p><a href="{% url 'visit:specializations_list' %}">Powrót do wyboru specjalizacji</a></p>
-<p><a href="{% url 'visit:home_page' %}">Powrót do menu rezerwacji</a></p>
-
+</main>
+<footer class="footer-buttons">
+    <div class="back-link">
+        <a href="{% url 'visit:specializations_list' %}">Powrót do wyboru specjalizacji</a>
+    </div>
+    <div class="back-link">
+        <a href="{% url 'visit:home_page' %}">Powrót do menu rezerwacji</a>
+    </div>
+</footer>
 </body>
 </html>

@@ -14,7 +14,7 @@ class User(AbstractUser):
     phone_number = models.CharField(max_length=15)
 
     # Pola dla lekarzy
-    specialization = models.CharField(max_length=100)
+    specialization = models.CharField(max_length=100,blank=True)
     accepts_children = models.BooleanField(default=False)
     languages = models.CharField(max_length=200, blank=True)
     photo = models.ImageField(upload_to='doctors/', blank=True, null=True)

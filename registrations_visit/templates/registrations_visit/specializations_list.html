@@ -1,22 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <title>Znajdź lekarza i umów wizytę</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/specializations_list.css' %}">
 </head>
 <body>
-    <h1>Znajdź lekarza i umów wizytę</h1>
 
-     <ul>
-            <li><a href="{% url 'visit:select_spec' 'chirurg' %}"">Chirurg</a></li>
-            <li><a href="{% url 'visit:select_spec' 'stomatolog' %}"">Stomatolog</a></li>
-            <li><a href="{% url 'visit:select_spec' 'genikolog' %}"">Genikolog</a></li>
-            <li><a href="{% url 'visit:select_spec' 'neurolog' %}"">Neurolog</a></li>
-            <li><a href="{% url 'visit:select_spec' 'dermatolog' %}"">Dermatolog</a></li>
-            <li><a href="{% url 'visit:select_spec' 'pediatra' %}"">Pediatra</a></li>
-            <li><a href="{% url 'visit:select_spec' 'kardiolog' %}">Kardiolog</a></li>
-          </ul>
+    <div class="page-header">
+        <h1>Znajdź lekarza i umów wizytę</h1>
+    </div>
+        <div class="specializations">
+            <div class="specialization-item">
+                <a href="{% url 'visit:select_spec' 'chirurg' %}">Chirurg</a>
+            </div>
 
-    <p><a href="{% url 'visit:home_page' %}">Powrót do menu rezerwacji</a></p>
+            <div class="specialization-item">
+                <a href="{% url 'visit:select_spec' 'stomatolog' %}">Stomatolog</a>
+            </div>
+
+            <div class="specialization-item">
+                <a href="{% url 'visit:select_spec' 'onkolog' %}">Onkolog</a>
+            </div>
+
+            <div class="specialization-item">
+                <a href="{% url 'visit:select_spec' 'neurolog' %}">Neurolog</a>
+            </div>
+
+            <div class="specialization-item">
+                <a href="{% url 'visit:select_spec' 'dermatolog' %}">Dermatolog</a>
+            </div>
+
+            <div class="specialization-item">
+                <a href="{% url 'visit:select_spec' 'pediatra' %}">Pediatra</a>
+            </div>
+
+            <div class="specialization-item">
+                <a href="{% url 'visit:select_spec' 'kardiolog' %}">Kardiolog</a>
+            </div>
+        </div>
+    <div class="back-link">
+        <a href="{% url 'visit:home_page' %}">Powrót do menu rezerwacji</a>
+    </div>
+
 </body>
 </html>
