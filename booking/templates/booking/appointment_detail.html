@@ -3,45 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <title>Wybór wizyty</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/appointment_detail.css' %}">
 </head>
 <body>
+<div class="header-block">
+    <h1>Wybór opcji wizyty</h1>
+</div>
 
-<h1>Wybierz opcję wizyty</h1>
+<div class="content-wrapper">
+    <div class="info-block">
+        <h2>Informacje o wizycie</h2>
+        <p><strong>Lekarz:</strong> {{ slot.doctor.get_full_name }}</p>
+        <p><strong>Data:</strong> {{ slot.start_datetime|date:"d.m.Y" }}</p>
+        <p><strong>Godzina:</strong>
+            {{ slot.start_datetime|date:"H:i" }} –
+            {{ slot.end_datetime|date:"H:i" }}
+        </p>
+    </div>
 
-<h2>Wizyta z {{ slot.doctor.get_full_name }}</h2>
+    <div class="form-block">
+        <h2>Rodzaj wizyty</h2>
 
-<p>
-    <strong>Data:</strong>
-    {{ slot.start_datetime|date:"d.m.Y" }}
-</p>
+        <form method="post" action="{% url 'booking:confirm_visit' slot.id %}">
+            {% csrf_token %}
 
-<p>
-    <strong>Godzina:</strong>
-    {{ slot.start_datetime|date:"H:i" }} –
-    {{ slot.end_datetime|date:"H:i" }}
-</p>
+            <select name="service_id" required>
+                <option value="" disabled selected hidden>Wybierz usługę</option>
+                {% for service in services %}
+                    <option value="{{ service.id }}">
+                        {{ service.name }} – {{ service.price }}
+                    </option>
+                {% endfor %}
+            </select>
 
-<form method="post" action="{% url 'booking:confirm_visit' slot.id %}">
-    {% csrf_token %}
+            <button type="submit">Potwierdź wizytę</button>
+        </form>
+    </div>
 
-    <label for="service_id">Rodzaj wizyty:</label><br><br>
+</div>
 
-    <select name="service_id" id="service_id" required>
-        <option value="" disabled selected hidden>
-            Wybierz usługę
-        </option>
-
-        {% for service in services %}
-            <option value="{{ service.id }}">
-                {{ service.name }} – {{ service.price }}
-            </option>
-        {% endfor %}
-    </select>
-
-    <br><br>
-
-    <button type="submit">Potwierdź wizytę</button>
-</form>
+<div class="back-wrapper">
+    <a href="{% url 'visit:home_page' %}">Powrót do strony głównej</a>
+</div>
 
 </body>
 </html>
