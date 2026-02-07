@@ -15,7 +15,6 @@ class PatientAppointmentsView(LoginRequiredMixin, ListView):
     context_object_name = 'appointments'
 
     def get_queryset(self):
-        # общий queryset — можно оставить, он не обязателен
         return Appointment.objects.filter(
             patient=self.request.user
         ).select_related(
