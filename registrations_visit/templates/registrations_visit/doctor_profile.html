@@ -33,7 +33,7 @@
                     {% for slot in day.list %}
                         <li>
                             {% if user.is_authenticated %}
-                                <a href="{% url 'booking:wybierz_wizyte' slot.id %}">
+                                <a href="{% url 'booking:select_appointment' slot.id %}">
                                     {{ slot.start_datetime|date:"H:i" }} - {{ slot.end_datetime|date:"H:i" }}
                                 </a>
                             {% else %}

@@ -57,7 +57,6 @@ body {
     margin-bottom: 20px;
 }
 
-/* ===== ФОРМА ===== */
 .form-block form {
     display: flex;
     flex-direction: column;
