@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.utils import timezone
 from registrations_visit.models import TimeSlot
 from django.contrib.auth.decorators import login_required
+from notifications.emails import appointment_confirmation
 
 
 
@@ -73,10 +74,13 @@ def confirm_visit(request, slot_id):
     if request.method == 'POST':
         service_id = request.POST.get('service_id')
         service = get_object_or_404(Service, id=service_id)
-        Appointment.objects.create(
+        appointment = Appointment.objects.create(
             patient=request.user,
             slot=slot,
         )
+
+        appointment_confirmation(request.user, appointment)
+
         return redirect('booking:appointment_success')
     return redirect('booking:appointment_detail', slot_id=slot.id)
 

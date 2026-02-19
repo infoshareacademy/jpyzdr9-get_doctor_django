@@ -44,4 +44,3 @@ class TimeSlot(models.Model):
 
     def __str__(self):
         return f"{self.doctor.username} - {self.start_datetime} / {self.end_datetime}"
-
