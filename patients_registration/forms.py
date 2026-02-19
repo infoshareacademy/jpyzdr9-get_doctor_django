@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
+from localflavor.pl.forms import PLPESELField
+from notifications.emails import welcome_mail
 
 User = get_user_model()
 
@@ -40,6 +42,7 @@ class BaseUserCreationForm(forms.ModelForm):
 class PatientRegistrationForm(BaseUserCreationForm):
     first_name = forms.CharField(label='Imię', max_length=150)
     last_name = forms.CharField(label='Nazwisko', max_length=150)
+    pesel = PLPESELField(label='PESEL')
 
     class Meta(BaseUserCreationForm.Meta):
         fields = [
@@ -54,6 +57,7 @@ class PatientRegistrationForm(BaseUserCreationForm):
             'emergency_contact',
             'blood_type',
             'allergies',
+            'email'
         ]
 
         labels = {
@@ -68,6 +72,7 @@ class PatientRegistrationForm(BaseUserCreationForm):
             'emergency_contact': 'Kontakt awaryjny',
             'blood_type': 'Grupa krwi',
             'allergies': 'Alergie',
+            'email': 'E-mail',
         }
 
         help_texts = {
@@ -79,9 +84,12 @@ class PatientRegistrationForm(BaseUserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.role = 'patient'
-        user.first_name = self.cleaned_data['first_name']
-        user.last_name = self.cleaned_data['last_name']
+        user.first_name = self.cleaned_data.get('first_name')
+        user.last_name = self.cleaned_data.get('last_name')
+
         if commit:
             user.save()
+            welcome_mail(user)
+
         return user
 
