@@ -3,58 +3,110 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+.container {
+    background: white;
+    padding: 5px 20px;
+    max-width: 1600px;
+    margin: 0 auto;
+}
 
 .page-header {
-    width: 90%;
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #417690;
-    color: wheat;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    width: 100%;
+    margin: 10px;
+    display: flex;
+    justify-content: right;
+    text-shadow: 1px 1px 2px black;
 }
 
 .page-header h1 {
-    margin: 10px;
     font-size: 28px;
-}
-
-.main-content {
-    width: 90%;
-    max-width: 1200px;
-    margin: 40px auto;
-    display: flex;
-    justify-content: flex-start;
-}
-
-
-.doctor-list {
-    width: 250px;
-}
-
-.doctor-list ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.doctor-item {
-    margin: 10px 0;
-    background-color: #417690;
-    border-radius: 10px;
-    padding: 12px 20px;
-}
-
-.doctor-item a {
-    text-decoration: none;
     color: wheat;
-    font-weight: bold;
+}
+
+.doctor-card {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    background-color: whitesmoke;
+}
+
+.doctor-left {
+    flex: 1;
+    max-width: 400px;
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 5px;
+    background-color: #417690;
+}
+
+.doctor-photo {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+
+.doctor-left h2 {
+    font-size: 30px;
+    color: wheat;
+    text-shadow: 1px 1px 2px black;
+    display: flex;
+    justify-content: left;
+    padding: 15px;
+    margin: 5px;
+}
+
+
+.doctor-left p strong {
+    font-size: 22px;
+    color: wheat;
+    text-shadow: 1px 1px 2px black;
+}
+
+.doctor-left p {
     font-size: 18px;
+    color: black;
+    text-shadow: 1px 1px 2px white;
+     font-weight: bold;
+}
+
+
+.doctor-right {
+    flex: 1;
+    max-width: 1100px;
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 5px;
+    background-color: #417690;
+}
+
+
+
+.doctor-right h3 {
+    font-size: 30px;
+    color: wheat;
+    text-shadow: 1px 1px 2px black;
+    display: flex;
+    justify-content: right;
+    padding: 15px;
+    margin: 5px;
+}
+
+.day-column h4 {
+    font-size: 15px;
+    color: wheat;
+    text-shadow: 1px 1px 2px black;
+    display: flex;
+    flex-direction: column;
 }
 
 .back-buttons {
-    position: fixed;
+    /*position: fixed;*/
     right: 20px;
     bottom: 20px;
     display: flex;
@@ -78,3 +130,62 @@ body {
     font-size: 16px;
 }
 
+.slots-columns {
+    display: flex;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 10px 5px;
+}
+
+..day-column {
+    flex: 0 0 120px; /* фиксированная ширина */
+    height: 220px;   /* фиксированная высота */
+    border: 1px solid black;
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.05);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    padding: 5px 2px;
+}
+
+.day-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 5px;
+    flex-shrink: 0; /* заголовок не сжимается */
+}
+
+.day-header .day-short {
+    font-size: 22px;
+    color: wheat;
+    font-weight: bold;
+}
+
+.day-header .day-date {
+    font-size: 22px;
+    color: wheat;
+}
+
+.day-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1; /* список слотов занимает оставшееся место */
+    overflow-y: auto; /* скролл при переполнении */
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.slot-link {
+    display: block;
+    background-color: wheat;
+    color: #417690 !important;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 3px 0;
+    border-radius: 2px;
+}

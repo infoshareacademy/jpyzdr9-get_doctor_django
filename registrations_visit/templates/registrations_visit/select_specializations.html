@@ -1,33 +1,73 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ specialization|capfirst }}</title>
+{% extends "registrations_visit/base.html" %}
+{% load static %}
 
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/select_spec.css' %}">
-</head>
-<body>
-    <header class="page-header">
-        <h1>Lista lekarzy: {{ specialization|capfirst }}</h1>
-    </header>
-    <main class="main-content">
-        <div class="doctor-list">
-            {% if doctors %}
-                <ul>
-                    {% for doctor in doctors %}
-                        <li class="doctor-item">
-                            <a href="{% url 'visit:doctor_profile' doctor.specialization doctor.id %}">
-                                {{ doctor.last_name }} {{ doctor.first_name }}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
+{% block title %}
+Lekarze: {{ specialization|capfirst }}
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/select_spec.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>{{ specialization_plural|upper }}</h1>
+    </div>
+
+    {% if doctors %}
+     {% for doctor in doctors %}
+    <div class="doctor-card">
+        <div class="doctor-left">
+            <h2>{{ doctor.first_name }} {{ doctor.last_name }}</h2>
+            {% if doctor.photo %}
+                <img src="{{ doctor.photo.url }}" alt="Foto {{ doctor.first_name }}" class="doctor-photo">
             {% else %}
-                <p>Brak lekarzy w tej specjalizacji.</p>
+                <div class="no-photo">Brak zdjęcia</div>
             {% endif %}
+            <p><strong>Specjalizacja:</strong> {{ doctor.specialization }}</p>
+            <p><strong>Email:</strong> {{ doctor.email|default:"Brak informacji" }}</p>
+            <p><strong>Telefon:</strong> {{ doctor.phone_number|default:"Brak informacji" }}</p>
+            <p><strong>Języki:</strong> {{ doctor.languages|default:"Brak informacji" }}</p>
         </div>
-    </main>
+
+        <div class="doctor-right">
+            <h3>Dostępne terminy</h3>
+            <div class="slots-columns">
+                {% regroup doctor.slots by start_datetime.date as days %}
+                {% for day in days %}
+                  <div class="day-column">
+    <div class="day-header">
+        <span class="day-short">{{ day.grouper|date:"D" }}</span>
+        <span class="day-date">{{ day.grouper|date:"d.m" }}</span>
+    </div>
+    <ul>
+        {% if day.list %}
+            {% for slot in day.list %}
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'booking:select_appointment' slot.id %}" class="slot-link">
+                        {{ slot.start_datetime|date:"H:i" }}
+                    </a></li>
+                {% else %}
+                    <li><a href="{% url 'patient:login' %}" class="slot-link">
+                        {{ slot.start_datetime|date:"H:i" }}
+                    </a></li>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <li class="empty-slot">—</li>
+        {% endif %}
+    </ul>
+</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endfor %}
+    {% else %}
+        <p>Brak lekarzy w tej specjalizacji.</p>
+    {% endif %}
+
     <div class="back-buttons">
         <div class="back-link">
             <a href="{% url 'visit:specializations_list' %}">Powrót do wyboru specjalizacji</a>
@@ -36,5 +76,5 @@
             <a href="{% url 'visit:home_page' %}">Powrót do strony głównej</a>
         </div>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}

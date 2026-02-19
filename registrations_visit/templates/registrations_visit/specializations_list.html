@@ -1,49 +1,62 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <title>Znajdź lekarza i umów wizytę</title>
+{% extends "registrations_visit/base.html" %}
+{% load static %}
 
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/specializations_list.css' %}">
-</head>
-<body>
+{% block title %}Znajdź lekarza i umów wizytę{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/specializations_list.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
 
     <div class="page-header">
         <h1>Znajdź lekarza i umów wizytę</h1>
     </div>
-        <div class="specializations">
-            <div class="specialization-item">
-                <a href="{% url 'visit:select_spec' 'chirurg' %}">Chirurg</a>
-            </div>
 
-            <div class="specialization-item">
-                <a href="{% url 'visit:select_spec' 'stomatolog' %}">Stomatolog</a>
-            </div>
+    <div class="specializations">
 
-            <div class="specialization-item">
-                <a href="{% url 'visit:select_spec' 'onkolog' %}">Onkolog</a>
-            </div>
-
-            <div class="specialization-item">
-                <a href="{% url 'visit:select_spec' 'neurolog' %}">Neurolog</a>
-            </div>
-
-            <div class="specialization-item">
-                <a href="{% url 'visit:select_spec' 'dermatolog' %}">Dermatolog</a>
-            </div>
-
-            <div class="specialization-item">
-                <a href="{% url 'visit:select_spec' 'pediatra' %}">Pediatra</a>
-            </div>
-
-            <div class="specialization-item">
-                <a href="{% url 'visit:select_spec' 'kardiolog' %}">Kardiolog</a>
-            </div>
+        <div class="specialization-item">
+            <a href="{% url 'visit:select_spec' 'chirurg' %}">Chirurg</a>
         </div>
-    <div class="back-link">
+
+        <div class="specialization-item">
+            <a href="{% url 'visit:select_spec' 'stomatolog' %}">Stomatolog</a>
+        </div>
+
+        <div class="specialization-item">
+            <a href="{% url 'visit:select_spec' 'onkolog' %}">Onkolog</a>
+        </div>
+
+        <div class="specialization-item">
+            <a href="{% url 'visit:select_spec' 'neurolog' %}">Neurolog</a>
+        </div>
+
+        <div class="specialization-item">
+            <a href="{% url 'visit:select_spec' 'dermatolog' %}">Dermatolog</a>
+        </div>
+
+        <div class="specialization-item">
+            <a href="{% url 'visit:select_spec' 'pediatra' %}">Pediatra</a>
+        </div>
+
+        <div class="specialization-item">
+            <a href="{% url 'visit:select_spec' 'kardiolog' %}">Kardiolog</a>
+        </div>
+
+    </div>
+
+<div class="content-box">
+    <img src="{% static 'resources/logo/receptions.png' %}" alt="receptions" class="content-image">
+
+</div>
+
+   <div class="back-link">
         <a href="{% url 'visit:home_page' %}">Powrót do strony głównej</a>
     </div>
 
-</body>
-</html>
+</div>
+
+
+{% endblock %}

@@ -6,6 +6,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 import logging
+from datetime import timedelta
+from django.utils import timezone
+
 
 logger = logging.getLogger(__name__)
 User = get_user_model()
@@ -16,13 +19,12 @@ def service_unavailable(request):
 
 
 def home_page(request):
-    random_posts = Post.objects.filter(is_published=True).order_by('?')[:5]
+    random_posts = Post.objects.filter(is_published=True).order_by('?')[:4]
     context = {
         'random_posts': random_posts,
-        'today': timezone.now(),
     }
     logging.debug(f"Home page opened by user: {request.user}")
-    return render(request, 'registrations_visit/home_page.html', context)
+    return render(request, 'registrations_visit/home.html', context)
 
 
 def general_info(request):
@@ -35,11 +37,83 @@ def specializations_list(request):
     return render(request, 'registrations_visit/specializations_list.html')
 
 
+
+# def select_spec(request, specialization):
+#     logging.info(f"User {request.user} selected specialization: {specialization}")
+#     doctors = User.objects.filter(specialization__iexact=specialization)
+#     slots = TimeSlot.objects.filter(doctor=doctor, is_booked=False).order_by('start_datetime')
+#     context = {
+#         'specialization': specialization,
+#         'doctors': doctors,
+#         'doctor': doctor,
+#         'slots': slots
+#     }
+#     return render(request, 'registrations_visit/select_specializations.html', context)
+#
+# def select_spec(request, specialization):
+#     plural_map = {
+#         'chirurg': 'chirurdzy',
+#         'stomatolog': 'stomatolodzy',
+#         'onkolog': 'onkolodzy',
+#         'neurolog': 'neurolodzy',
+#         'dermatolog': 'dermatolodzy',
+#         'pediatra': 'pediatrzy',
+#         'kardiolog': 'kardiolodzy',
+#     }
+#
+#     # Получаем только список врачей
+#     doctors = User.objects.filter(specialization__iexact=specialization)
+#
+#     context = {
+#         'specialization': specialization,
+#         'specialization_plural': plural_map.get(specialization, specialization),
+#         'doctors': doctors,
+#     }
+#     return render(request, 'registrations_visit/select_specializations.html', context)
+
+
+# def select_spec(request, specialization):
+#     plural_map = {
+#         'chirurg': 'chirurdzy',
+#         'stomatolog': 'stomatolodzy',
+#         'onkolog': 'onkolodzy',
+#         'neurolog': 'neurolodzy',
+#         'dermatolog': 'dermatolodzy',
+#         'pediatra': 'pediatrzy',
+#         'kardiolog': 'kardiolodzy',
+#     }
+#
+#     doctors = User.objects.filter(specialization__iexact=specialization)
+#     slots = TimeSlot.objects.filter(is_booked=False).order_by('start_datetime')
+#
+#     context = {
+#         'specialization': specialization,
+#         'specialization_plural': plural_map.get(specialization, specialization),
+#         'doctors': doctors,
+#         'slots': slots
+#     }
+#     return render(request, 'registrations_visit/select_specializations.html', context)
+
 def select_spec(request, specialization):
-    logging.info(f"User {request.user} selected specialization: {specialization}")
+    plural_map = {
+        'chirurg': 'chirurdzy',
+        'stomatolog': 'stomatolodzy',
+        'onkolog': 'onkolodzy',
+        'neurolog': 'neurolodzy',
+        'dermatolog': 'dermatolodzy',
+        'pediatra': 'pediatrzy',
+        'kardiolog': 'kardiolodzy',
+    }
+
     doctors = User.objects.filter(specialization__iexact=specialization)
+
+    # Вместо словаря — добавим каждому врачу свой список слотов прямо как атрибут
+    for doctor in doctors:
+        doctor.slots = TimeSlot.objects.filter(is_booked=False, doctor=doctor).order_by('start_datetime')
+
     context = {
         'specialization': specialization,
+        'specialization_plural': plural_map.get(specialization, specialization),
         'doctors': doctors
     }
     return render(request, 'registrations_visit/select_specializations.html', context)
