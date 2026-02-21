@@ -1,37 +1,59 @@
 body {
     margin: 0;
-    padding: 0;
-    font-family: Roboto, Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    background: white;
+    padding: 5px 10px;
+    max-width: 1600px;
+    margin: 0 auto;
 }
 
 .main-block {
-    width: 80%;
-    margin: 40px auto;
-    padding: 15px;
-    background: #417690;
-    border-radius: 12px;
+    font-size: 28px ;
+    width: 100%;
+    padding-bottom: 20px;
+    display: flex;
     color: wheat;
+    text-shadow: 1px 1px 2px black;
     text-align: left;
+    justify-content: right;
 }
 
 .appointments-wrapper {
-    width: 80%;
-    margin: 20px auto;
+    width: 100%;
     display: flex;
-    gap: 40px;
+    gap: 20px;
 }
 
 .appointments-block {
     width: 50%;
     background: #417690;
-    padding: 20px;
-    border-radius: 15px;
+    padding: 25px;
+    border-radius: 10px;
     color: wheat;
 }
 
 .appointments-block h3 {
-    margin-top: 0;
+     margin-top: 0;
     margin-bottom: 15px;
+    text-shadow: 1px 1px 2px black;
+    font-size: 30px;
+}
+
+.appointments-block p {
+    margin: 10px 0;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px black;
+}
+
+.appointments-block p strong {
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+    text-shadow: 1px 1px 2px gray;
 }
 
 .appointments-block ol {
@@ -40,6 +62,7 @@ body {
 
 .appointments-block li {
     margin-bottom: 20px;
+    text-shadow: 1px 1px 2px black;
 }
 
 .appointments-block p {
@@ -50,6 +73,7 @@ body {
     padding: 10px 18px;
     border-radius: 8px;
     border: 2px solid darkslategray;
+    text-shadow: 1px 1px 2px black;
     background: #6f94c6;
     color: wheat;
     font-size: 14px;
@@ -57,9 +81,8 @@ body {
 }
 
 .back-wrapper {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
+    margin-top: 250px;
+    text-align: right;
 }
 
 .back-wrapper a {

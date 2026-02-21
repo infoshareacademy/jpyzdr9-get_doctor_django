@@ -65,6 +65,8 @@ class AppointmentDetailListView(LoginRequiredMixin, TemplateView):
         slot = TimeSlot.objects.get(id=slot_id)
         context['slot'] = slot
         context['services'] = Service.objects.filter(doctor=slot.doctor)
+        context['specialization'] = slot.doctor.specialization
+
         return context
 
 @login_required
