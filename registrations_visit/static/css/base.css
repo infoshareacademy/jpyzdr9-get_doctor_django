@@ -1,0 +1,122 @@
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+.container {
+  background: white;
+  padding: 5px 20px;
+    max-width: 1600px;
+    margin: 0 auto;;
+}
+
+header .navbar {
+  display: flex;
+  background: #417690;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+
+}
+
+header .navbar ul {
+  display: flex;
+  justify-content: flex-end;
+  margin: 5px;
+  gap: 15px;
+  padding: 0 40px;
+  box-sizing: border-box;
+  flex-grow: 1;
+}
+
+header .navbar ul li {
+  list-style-type: none;
+  padding: 5px 0;
+  text-align: center;
+  position: relative;
+}
+
+header .navbar ul span.user-name {
+  color: wheat;
+  font-size: 20px;
+  font-weight: 400;
+  text-shadow: 1px 1px 2px black;
+  padding: 10px;
+}
+
+header .navbar ul li a,
+header .navbar ul li a.profile-link {
+  color: wheat;
+  font-size: 20px;
+  font-weight: 400;
+  text-decoration: none;
+  text-shadow: 1px 1px 2px black;
+  padding: 5px 10px;
+
+}
+
+header .navbar ul li a:hover,
+header .navbar ul li a.profile-link:hover {
+  background: #6f94c6;
+  border-radius: 5px;
+}
+
+header .current-date {
+  color: wheat;
+  font-family: 'Lora', sans-serif;
+  font-size: 20px;
+  margin: 5px;
+  font-weight: bold;
+  text-indent: 20px;
+  text-shadow: 0 2px 2px rgba(0,0,0,0.8);
+}
+
+header .navbar ul li.dropdown {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+header .navbar ul li.dropdown .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #417690;
+  border: 2px solid white;
+  border-radius: 10px;
+  min-width: 180px;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+header .navbar ul li.dropdown.open .dropdown-menu {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+header .navbar ul li.dropdown .dropdown-menu li {
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+header .navbar ul li.dropdown .dropdown-menu li a {
+  color: wheat;
+  font-size: 18px;
+  text-decoration: none;
+  padding: 10px;
+  display: block;
+}
+
+header .navbar ul li.dropdown .dropdown-menu li a:hover {
+  background: #6f94c6;
+  border-radius: 5px;
+}
