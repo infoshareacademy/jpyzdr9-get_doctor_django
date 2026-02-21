@@ -6,8 +6,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 import logging
-from datetime import timedelta
 from django.utils import timezone
+from datetime import datetime, timedelta, time
 
 
 logger = logging.getLogger(__name__)
@@ -37,99 +37,87 @@ def specializations_list(request):
     return render(request, 'registrations_visit/specializations_list.html')
 
 
-
-# def select_spec(request, specialization):
-#     logging.info(f"User {request.user} selected specialization: {specialization}")
-#     doctors = User.objects.filter(specialization__iexact=specialization)
-#     slots = TimeSlot.objects.filter(doctor=doctor, is_booked=False).order_by('start_datetime')
-#     context = {
-#         'specialization': specialization,
-#         'doctors': doctors,
-#         'doctor': doctor,
-#         'slots': slots
-#     }
-#     return render(request, 'registrations_visit/select_specializations.html', context)
-#
-# def select_spec(request, specialization):
-#     plural_map = {
-#         'chirurg': 'chirurdzy',
-#         'stomatolog': 'stomatolodzy',
-#         'onkolog': 'onkolodzy',
-#         'neurolog': 'neurolodzy',
-#         'dermatolog': 'dermatolodzy',
-#         'pediatra': 'pediatrzy',
-#         'kardiolog': 'kardiolodzy',
-#     }
-#
-#     # Получаем только список врачей
-#     doctors = User.objects.filter(specialization__iexact=specialization)
-#
-#     context = {
-#         'specialization': specialization,
-#         'specialization_plural': plural_map.get(specialization, specialization),
-#         'doctors': doctors,
-#     }
-#     return render(request, 'registrations_visit/select_specializations.html', context)
-
-
-# def select_spec(request, specialization):
-#     plural_map = {
-#         'chirurg': 'chirurdzy',
-#         'stomatolog': 'stomatolodzy',
-#         'onkolog': 'onkolodzy',
-#         'neurolog': 'neurolodzy',
-#         'dermatolog': 'dermatolodzy',
-#         'pediatra': 'pediatrzy',
-#         'kardiolog': 'kardiolodzy',
-#     }
-#
-#     doctors = User.objects.filter(specialization__iexact=specialization)
-#     slots = TimeSlot.objects.filter(is_booked=False).order_by('start_datetime')
-#
-#     context = {
-#         'specialization': specialization,
-#         'specialization_plural': plural_map.get(specialization, specialization),
-#         'doctors': doctors,
-#         'slots': slots
-#     }
-#     return render(request, 'registrations_visit/select_specializations.html', context)
-
 def select_spec(request, specialization):
+    doctors = User.objects.filter(
+        specialization__iexact=specialization,
+        role='doctor'
+    )
+
     plural_map = {
-        'chirurg': 'chirurdzy',
-        'stomatolog': 'stomatolodzy',
-        'onkolog': 'onkolodzy',
-        'neurolog': 'neurolodzy',
-        'dermatolog': 'dermatolodzy',
-        'pediatra': 'pediatrzy',
-        'kardiolog': 'kardiolodzy',
-    }
+                'chirurg': 'chirurdzy',
+                'stomatolog': 'stomatolodzy',
+                'onkolog': 'onkolodzy',
+                'neurolog': 'neurolodzy',
+                'dermatolog': 'dermatolodzy',
+                'pediatra': 'pediatrzy',
+                'kardiolog': 'kardiolodzy',
+            }
 
-    doctors = User.objects.filter(specialization__iexact=specialization)
+    now = timezone.now()
+    today = now.date()
+    TOTAL_DAYS = 14
+    DAYS_PER_PAGE = 7
 
-    # Вместо словаря — добавим каждому врачу свой список слотов прямо как атрибут
+    next_days = [today + timedelta(days=i) for i in range(TOTAL_DAYS)]
+
+    WORK_START = time(8, 0)
+    WORK_END = time(14, 0)
+    SLOT_INTERVAL = timedelta(minutes=30)
+
     for doctor in doctors:
-        doctor.slots = TimeSlot.objects.filter(is_booked=False, doctor=doctor).order_by('start_datetime')
+        page_param = f"page_{doctor.id}"
+        page = int(request.GET.get(page_param, 0))
+
+        start_index = page * DAYS_PER_PAGE
+        end_index = start_index + DAYS_PER_PAGE
+        visible_days = next_days[start_index:end_index]
+
+        doctor.week_schedule = []
+
+        for day in visible_days:
+            day_slots = []
+
+                # Берем существующие слоты на этот день
+            existing_slots = TimeSlot.objects.filter(
+                doctor=doctor,
+                start_datetime__date=day
+            )
+            existing_dict = {}
+
+            for slot in existing_slots:
+                local_dt = timezone.localtime(slot.start_datetime)
+                existing_dict[local_dt.time()] = slot
+
+            # Генерируем все слоты для рабочей смены с таймзоной
+            current_time = timezone.make_aware(datetime.combine(day, WORK_START))
+            end_time = timezone.make_aware(datetime.combine(day, WORK_END))
+
+            while current_time < end_time:
+                slot_time = current_time.time()
+                if slot_time in existing_dict:
+                    day_slots.append(existing_dict[slot_time])
+                else:
+                    day_slots.append(None)
+                current_time += SLOT_INTERVAL
+
+            doctor.week_schedule.append({
+                'date': day,
+                'slots': day_slots
+            })
+
+        doctor.current_page = page
+        doctor.page_param = page_param
+        doctor.max_page = (TOTAL_DAYS // DAYS_PER_PAGE) - 1
 
     context = {
         'specialization': specialization,
         'specialization_plural': plural_map.get(specialization, specialization),
-        'doctors': doctors
+        'doctors': doctors,
     }
+
     return render(request, 'registrations_visit/select_specializations.html', context)
 
 
-def doctor_profile(request, specialization, doctor_id):
-    doctor = get_object_or_404(User, id=doctor_id, specialization__iexact=specialization, role='doctor')
-    logging.info(f"User {request.user} selected specialization: {specialization} doctor: {doctor.get_full_name()} doctor_id: {doctor_id}")
-    slots = TimeSlot.objects.filter(doctor=doctor, is_booked=False).order_by('start_datetime')
-
-    context = {
-        'doctor': doctor,
-        'slots': slots
-    }
-    logging.debug(f"User {request.user} opened doctor profile")
-    return render(request, 'registrations_visit/doctor_profile.html', context)
 
 
 class PostListView(ListView):

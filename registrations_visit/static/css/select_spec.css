@@ -5,7 +5,7 @@ body {
 
 .container {
     background: white;
-    padding: 5px 20px;
+    padding: 5px 10px;
     max-width: 1600px;
     margin: 0 auto;
 }
@@ -27,10 +27,6 @@ body {
     display: flex;
     gap: 20px;
     padding: 20px;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    background-color: whitesmoke;
 }
 
 .doctor-left {
@@ -38,18 +34,9 @@ body {
     max-width: 400px;
     border: 2px solid black;
     border-radius: 8px;
-    padding: 5px;
+    padding: 10px;
     background-color: #417690;
 }
-
-.doctor-photo {
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 10px;
-}
-
 
 .doctor-left h2 {
     font-size: 30px;
@@ -57,10 +44,16 @@ body {
     text-shadow: 1px 1px 2px black;
     display: flex;
     justify-content: left;
-    padding: 15px;
-    margin: 5px;
+    padding: 5px;
+    margin: 0;
 }
 
+.doctor-left p {
+    font-size: 18px;
+    color: black;
+    text-shadow: 1px 1px 2px white;
+    font-weight: bold;
+}
 
 .doctor-left p strong {
     font-size: 22px;
@@ -68,13 +61,13 @@ body {
     text-shadow: 1px 1px 2px black;
 }
 
-.doctor-left p {
-    font-size: 18px;
-    color: black;
-    text-shadow: 1px 1px 2px white;
-     font-weight: bold;
+.doctor-photo {
+    width: 200px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
 }
-
 
 .doctor-right {
     flex: 1;
@@ -84,8 +77,6 @@ body {
     padding: 5px;
     background-color: #417690;
 }
-
-
 
 .doctor-right h3 {
     font-size: 30px;
@@ -97,21 +88,111 @@ body {
     margin: 5px;
 }
 
-.day-column h4 {
-    font-size: 15px;
-    color: wheat;
-    text-shadow: 1px 1px 2px black;
+.slots-columns {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 50px;
+}
+
+.day-column {
+    flex: 0 0 120px;
+    height: 460px;
+    border-right: 2px solid black;
+    border-left: 2px solid black;
+    text-align: center;
     display: flex;
     flex-direction: column;
+    padding: 5px 2px;
+    align-items: center;
+}
+
+.day-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.day-header .day-short {
+    font-size: 18px;
+    color: wheat;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px black;
+}
+
+.day-header .day-date {
+    font-size: 20px;
+    color: wheat;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px black;
+}
+
+.day-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.slot-link {
+    display: block;
+    color: wheat!important;
+    text-shadow: 1px 1px 2px black;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 5px 0;
+    margin: 1px;
+}
+
+.slot-link.unavailable {
+    display: block;
+    color: black !important;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 3px 0;
+}
+
+.calendar-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 30px;
+    text-decoration: none;
+    color: wheat;
+    font-weight: bold;
+    padding: 30px;
+}
+
+.nav-arrow.left {
+    left: -30px;
+}
+
+.nav-arrow.right {
+    right: -30px;
 }
 
 .back-buttons {
-    /*position: fixed;*/
-    right: 20px;
-    bottom: 20px;
     display: flex;
     flex-direction: column;
     gap: 12px;
+    margin-top: 20px;
+     align-items: flex-end;
 }
 
 .back-link {
@@ -130,62 +211,3 @@ body {
     font-size: 16px;
 }
 
-.slots-columns {
-    display: flex;
-    justify-content: flex-start;
-    gap: 8px;
-    padding: 10px 5px;
-}
-
-..day-column {
-    flex: 0 0 120px; /* фиксированная ширина */
-    height: 220px;   /* фиксированная высота */
-    border: 1px solid black;
-    border-radius: 4px;
-    background-color: rgba(0, 0, 0, 0.05);
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    padding: 5px 2px;
-}
-
-.day-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 5px;
-    flex-shrink: 0; /* заголовок не сжимается */
-}
-
-.day-header .day-short {
-    font-size: 22px;
-    color: wheat;
-    font-weight: bold;
-}
-
-.day-header .day-date {
-    font-size: 22px;
-    color: wheat;
-}
-
-.day-column ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    flex-grow: 1; /* список слотов занимает оставшееся место */
-    overflow-y: auto; /* скролл при переполнении */
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-.slot-link {
-    display: block;
-    background-color: wheat;
-    color: #417690 !important;
-    text-decoration: none;
-    font-size: 20px;
-    font-weight: bold;
-    padding: 3px 0;
-    border-radius: 2px;
-}
