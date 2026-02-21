@@ -76,8 +76,6 @@ def select_spec(request, specialization):
 
         for day in visible_days:
             day_slots = []
-
-                # Берем существующие слоты на этот день
             existing_slots = TimeSlot.objects.filter(
                 doctor=doctor,
                 start_datetime__date=day
@@ -87,8 +85,6 @@ def select_spec(request, specialization):
             for slot in existing_slots:
                 local_dt = timezone.localtime(slot.start_datetime)
                 existing_dict[local_dt.time()] = slot
-
-            # Генерируем все слоты для рабочей смены с таймзоной
             current_time = timezone.make_aware(datetime.combine(day, WORK_START))
             end_time = timezone.make_aware(datetime.combine(day, WORK_END))
 
@@ -116,8 +112,6 @@ def select_spec(request, specialization):
     }
 
     return render(request, 'registrations_visit/select_specializations.html', context)
-
-
 
 
 class PostListView(ListView):
