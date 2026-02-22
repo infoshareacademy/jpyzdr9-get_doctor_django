@@ -1,62 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Nasza Klinika Medyczna</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/general_info.css' %}">
-</head>
-<body>
+{% extends "registrations_visit/base.html" %}
+{% load static %}
 
-    <div class="section-block">
-        <h1>Nasza Klinika Medyczna</h1>
-        <p>Witamy w naszej nowoczesnej klinice medycznej!<br>
-        Nasza placówka powstała z myślą o zapewnieniu najwyższej jakości opieki zdrowotnej dla pacjentów w każdym wieku.
-        W naszej klinice łączymy doświadczenie, profesjonalizm oraz indywidualne podejście do każdego pacjenta.</p>
+{% block title %}Nasza Klinika Medyczna{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/general_info.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="section-block">
+    <h1>Nasza Klinika Medyczna</h1>
+    <p>Witamy w naszej nowoczesnej klinice medycznej!<br>
+    Nasza placówka powstała z myślą o zapewnieniu najwyższej jakości opieki zdrowotnej dla pacjentów w każdym wieku.
+    W naszej klinice łączymy doświadczenie, profesjonalizm oraz indywidualne podejście do każdego pacjenta.
+    Dbamy o komfort, bezpieczeństwo oraz zaufanie osób, które powierzają nam swoje zdrowie.
+    Nasz zespół tworzą wykwalifikowani lekarze specjaliści, pielęgniarki oraz personel medyczny,
+    którzy stale podnoszą swoje kompetencje i korzystają z nowoczesnych metod diagnostycznych oraz terapeutycznych.
+    Oferujemy szeroki zakres usług medycznych – od konsultacji specjalistycznych, poprzez badania diagnostyczne,
+    aż po kompleksowe leczenie i profilaktykę. Naszym celem jest nie tylko skuteczne leczenie,
+    ale również edukacja pacjentów w zakresie dbania o zdrowie i zapobiegania chorobom.
+    W naszej klinice stawiamy na nowoczesne technologie oraz wysokiej jakości sprzęt medyczny,
+    co pozwala nam zapewnić precyzyjną diagnostykę i skuteczne leczenie. Każdego pacjenta traktujemy z szacunkiem,
+    empatią oraz pełnym zaangażowaniem. Zapraszamy do skorzystania z naszych usług i dołączenia do grona zadowolonych pacjentów.
+    Państwa zdrowie jest dla nas najważniejsze.</p>
+
+    <h2>Nasi lekarze</h2>
+    <p>Zespół naszej kliniki to wykwalifikowani specjaliści w różnych dziedzinach medycyny. Wśród nich znajdują się:</p>
+    <ul>
+        <li><span>Chirurdzy</span> – dbający o bezpieczeństwo podczas zabiegów chirurgicznych</li>
+        <li><span>Onkolodzy</span> – specjaliści zajmujący się diagnostyką i leczeniem nowotworów</li>
+        <li><span>Stomatolodzy</span> – zajmujący się zdrowiem jamy ustnej</li>
+        <li><span>Pediatrzy</span> – troszczący się o najmłodszych pacjentów</li>
+        <li><span>Neurolodzy</span> – diagnozujący choroby układu nerwowego</li>
+        <li><span>Dermatolodzy</span> – zajmujący się problemami skóry</li>
+        <li><span>Kardiolodzy</span> – dbający o zdrowie serca</li>
+    </ul>
+
+    <h2>Międzynarodowy personel</h2>
+    <p>Personel pochodzi z różnych krajów: Polska, Białoruś, Ukraina oraz USA.
+    Dzięki międzynarodowemu doświadczeniu naszego zespołu łączymy różne perspektywy medyczne,
+    standardy leczenia oraz najlepsze praktyki stosowane na świecie.
+    Wielokulturowe środowisko pracy pozwala nam lepiej rozumieć potrzeby pacjentów z różnych środowisk oraz zapewniać opiekę na najwyższym poziomie.
+    Nasi specjaliści posiadają bogate doświadczenie zdobyte zarówno w kraju, jak i za granicą.
+    Regularnie uczestniczą w szkoleniach, konferencjach naukowych oraz programach doskonalenia zawodowego,
+    aby stale podnosić swoje kwalifikacje.
+    Dzięki znajomości kilku języków obcych jesteśmy w stanie zapewnić komfortową komunikację pacjentom międzynarodowym,
+    co znacząco ułatwia proces diagnostyki i leczenia.
+    Otwartość, współpraca oraz wymiana wiedzy są fundamentem naszego zespołu.</p>
+
+    <h2>Obsługa w trzech językach</h2>
+    <p>Oferujemy konsultacje w języku polskim, rosyjskim i angielskim.
+    Dzięki temu zapewniamy naszym pacjentom komfortową i swobodną komunikację bez barier językowych.
+    Zależy nam na tym, aby każdy pacjent mógł dokładnie opisać swoje dolegliwości,
+    zrozumieć zalecenia lekarza oraz czuć się w pełni bezpiecznie podczas wizyty.
+    Wielojęzyczna obsługa pozwala nam świadczyć usługi medyczne zarówno dla pacjentów lokalnych,
+    jak i zagranicznych. Dbamy o jasne przekazywanie informacji dotyczących diagnozy,
+    planu leczenia oraz profilaktyki, ponieważ skuteczna komunikacja jest podstawą dobrej opieki medycznej.
+    Naszym celem jest stworzenie przyjaznego i otwartego środowiska, w którym każdy pacjent czuje się wysłuchany i zrozumiany</p>
+
+    <h2>Zakres usług</h2>
+    <ul>
+        <li>rutynowe badania i konsultacje</li>
+        <li>procedury medyczne</li>
+        <li>drobne zabiegi chirurgiczne</li>
+    </ul>
+
+    <div class="down-block">
+        <p>Serdecznie zapraszamy do naszej kliniki.</p>
     </div>
 
-    <div class="section-block">
-        <h2>Nasi lekarze</h2>
-        <p>Zespół naszej kliniki to wykwalifikowani specjaliści w różnych dziedzinach medycyny. Wśród nich znajdują się:</p>
-        <ul>
-            <li>Chirurdzy – dbający o bezpieczeństwo podczas zabiegów chirurgicznych, zarówno rutynowych, jak i bardziej skomplikowanych</li>
-            <li>Onkolodzy – specjaliści zajmujący się diagnostyką i leczeniem nowotworów</li>
-            <li>Stomatolodzy – zajmujący się zdrowiem jamy ustnej i leczeniem stomatologicznym</li>
-            <li>Pediatrzy – troszczący się o najmłodszych pacjentów i ich komfort podczas wizyt</li>
-            <li>Neurolodzy – pomagający w diagnozowaniu i leczeniu chorób układu nerwowego</li>
-            <li>Dermatolodzy – zajmujący się problemami skóry, włosów i paznokci</li>
-            <li>Kardiolodzy – dbający o zdrowie serca i układu krążenia</li>
-        </ul>
-    </div>
 
-    <div class="section-block">
-        <h2>Międzynarodowy personel</h2>
-        <p>W naszej klinice pracuje zespół o zróżnicowanym międzynarodowym doświadczeniu. Personel pochodzi z różnych krajów: Polska, Białoruś, Ukraina oraz USA. Dzięki temu każdy pacjent może liczyć na profesjonalną opiekę w komfortowej i przyjaznej atmosferze.</p>
-    </div>
-
-    <div class="section-block">
-        <h2>Obsługa w trzech językach</h2>
-        <p>W trosce o komfort pacjentów oferujemy możliwość konsultacji w trzech językach: polskim, rosyjskim i angielskim.
-        Nasza kadra zawsze stara się jasno i cierpliwie tłumaczyć wszystkie procedury i zalecenia medyczne.</p>
-    </div>
-
-    <div class="section-block">
-        <h2>Zakres usług</h2>
-        <p>Oferujemy szeroki zakres usług medycznych, obejmujący zarówno standardowe wizyty i konsultacje, jak i bardziej zaawansowane procedury:</p>
-        <ul>
-            <li>rutynowe badania i konsultacje lekarskie</li>
-            <li>przeprowadzanie różnorodnych procedur medycznych</li>
-            <li>drobne zabiegi chirurgiczne i medyczne procedury ambulatoryjne</li>
-        </ul>
-        <p>Naszym priorytetem jest zdrowie pacjentów, a także zapewnienie im poczucia bezpieczeństwa i komfortu podczas każdej wizyty.</p>
-    </div>
-
-    <div class="section-block">
-        <p>Serdecznie zapraszamy wszystkich pacjentów do naszej kliniki – miejsca, w którym profesjonalizm spotyka się z troską o człowieka, a każdy pacjent traktowany jest indywidualnie.</p>
     </div>
     <div class="back-button">
         <a href="{% url 'visit:home_page' %}">Powrót do strony głównej</a>
     </div>
 
-</body>
-</html>
+{% endblock %}

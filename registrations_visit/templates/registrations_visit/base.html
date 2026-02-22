@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}getDoctor{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="navbar">
+            <div class="current-date">{% now "j F Y" %}</div>
+            <ul>
+                {% if user.is_authenticated %}
+                    <span class="user-name">{{ user.first_name }} {{ user.last_name }}</span>
+                    <li class="dropdown">
+                        <a href="#" class="profile-link">Mój profil ▾</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'patient:profile' %}">Dane osobowe</a></li>
+                            <li><a href="{% url 'visit:specializations_list' %}">Umów wizytę</a></li>
+                            <li><a href="{% url 'booking:appointment' %}">Moje wizyty</a></li>
+                            <li><a href="{% url 'patient:logout' %}">Wyloguj się</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'patients_registration:register_patient' %}">Zarejestruj się</a></li>
+                    <li><a href="{% url 'patient:login' %}">Zaloguj się</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </header>
+
+    {% block content %}{% endblock %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const dropdown = document.querySelector('header .navbar ul li.dropdown');
+    if (!dropdown) return;
+    dropdown.addEventListener('click', function (e) {
+        e.stopPropagation();
+        dropdown.classList.toggle('open');
+    });
+    document.addEventListener('click', function () {
+        dropdown.classList.remove('open');
+    });
+});
+</script>
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>

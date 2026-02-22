@@ -6,6 +6,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 import logging
+from django.utils import timezone
+from datetime import datetime, timedelta, time
+
 
 logger = logging.getLogger(__name__)
 User = get_user_model()
@@ -16,13 +19,12 @@ def service_unavailable(request):
 
 
 def home_page(request):
-    random_posts = Post.objects.filter(is_published=True).order_by('?')[:5]
+    random_posts = Post.objects.filter(is_published=True).order_by('?')[:4]
     context = {
         'random_posts': random_posts,
-        'today': timezone.now(),
     }
     logging.debug(f"Home page opened by user: {request.user}")
-    return render(request, 'registrations_visit/home_page.html', context)
+    return render(request, 'registrations_visit/home.html', context)
 
 
 def general_info(request):
@@ -36,26 +38,80 @@ def specializations_list(request):
 
 
 def select_spec(request, specialization):
-    logging.info(f"User {request.user} selected specialization: {specialization}")
-    doctors = User.objects.filter(specialization__iexact=specialization)
+    doctors = User.objects.filter(
+        specialization__iexact=specialization,
+        role='doctor'
+    )
+
+    plural_map = {
+                'chirurg': 'chirurdzy',
+                'stomatolog': 'stomatolodzy',
+                'onkolog': 'onkolodzy',
+                'neurolog': 'neurolodzy',
+                'dermatolog': 'dermatolodzy',
+                'pediatra': 'pediatrzy',
+                'kardiolog': 'kardiolodzy',
+            }
+
+    now = timezone.now()
+    today = now.date()
+    TOTAL_DAYS = 14
+    DAYS_PER_PAGE = 7
+
+    next_days = [today + timedelta(days=i) for i in range(TOTAL_DAYS)]
+
+    WORK_START = time(8, 0)
+    WORK_END = time(14, 0)
+    SLOT_INTERVAL = timedelta(minutes=30)
+
+    for doctor in doctors:
+        page_param = f"page_{doctor.id}"
+        page = int(request.GET.get(page_param, 0))
+
+        start_index = page * DAYS_PER_PAGE
+        end_index = start_index + DAYS_PER_PAGE
+        visible_days = next_days[start_index:end_index]
+
+        doctor.week_schedule = []
+
+        for day in visible_days:
+            day_slots = []
+            existing_slots = TimeSlot.objects.filter(
+                doctor=doctor,
+                start_datetime__date=day
+            )
+            existing_dict = {}
+
+            for slot in existing_slots:
+                local_dt = timezone.localtime(slot.start_datetime)
+                existing_dict[local_dt.time()] = slot
+            current_time = timezone.make_aware(datetime.combine(day, WORK_START))
+            end_time = timezone.make_aware(datetime.combine(day, WORK_END))
+
+            while current_time < end_time:
+                slot_time = current_time.time()
+                if slot_time in existing_dict:
+                    day_slots.append(existing_dict[slot_time])
+                else:
+                    day_slots.append(None)
+                current_time += SLOT_INTERVAL
+
+            doctor.week_schedule.append({
+                'date': day,
+                'slots': day_slots
+            })
+
+        doctor.current_page = page
+        doctor.page_param = page_param
+        doctor.max_page = (TOTAL_DAYS // DAYS_PER_PAGE) - 1
+
     context = {
         'specialization': specialization,
-        'doctors': doctors
+        'specialization_plural': plural_map.get(specialization, specialization),
+        'doctors': doctors,
     }
+
     return render(request, 'registrations_visit/select_specializations.html', context)
-
-
-def doctor_profile(request, specialization, doctor_id):
-    doctor = get_object_or_404(User, id=doctor_id, specialization__iexact=specialization, role='doctor')
-    logging.info(f"User {request.user} selected specialization: {specialization} doctor: {doctor.get_full_name()} doctor_id: {doctor_id}")
-    slots = TimeSlot.objects.filter(doctor=doctor, is_booked=False).order_by('start_datetime')
-
-    context = {
-        'doctor': doctor,
-        'slots': slots
-    }
-    logging.debug(f"User {request.user} opened doctor profile")
-    return render(request, 'registrations_visit/doctor_profile.html', context)
 
 
 class PostListView(ListView):

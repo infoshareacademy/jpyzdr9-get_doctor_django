@@ -1,0 +1,272 @@
+.top {
+  display: flex;
+  background: #417690;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px 10px 0 0;
+}
+
+.top form input {
+  padding: 15px;
+  border: 3px solid darkslategray;
+  border-radius: 10px;
+  outline: none;
+}
+
+.top form button {
+  padding: 15px;
+  border-radius: 10px;
+  border: 3px solid darkslategray;
+  outline: none;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  margin-right: 10px;
+}
+
+.logo p {
+  margin: 10px;
+}
+
+.logo p span {
+  font-weight: 500;
+}
+
+.logo p:first-child {
+  color: black;
+  font-size: 30px;
+}
+
+.logo p span:last-child {
+  color: wheat;
+    text-shadow: 1px 1px 2px black;
+}
+
+.logo p:last-child {
+  text-transform: uppercase;
+  color: wheat;
+  font-size: 25px;
+    text-shadow: 1px 1px 2px black;
+}
+
+.banner {
+  box-shadow: inset 0 2px 2px rgba(0,0,0,0.9);
+  background: url(../resources/logo/banner_2.png) no-repeat center center/cover;
+  height: 19vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.banner div {
+  margin-left: 60px;
+  font-family: 'Lora', sans-serif;
+}
+
+.banner div p {
+  margin: 10px 0;
+  color: wheat;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 2px black;
+  padding-left: 80px;
+}
+
+.banner div p:first-child {
+  font-size: 60px;
+}
+
+.banner div p:last-child {
+  font-weight: bold;
+  font-size: 50px;
+  text-indent: 100px;
+}
+
+.banner div p:last-child span {
+  color: black;
+}
+
+nav {
+  background: #417690;
+  padding: 10px 0 4px;
+  border-radius: 0 0 15px 15px;
+  margin-bottom: 15px;
+}
+
+.spec nav {
+  background: #417690;
+  padding: 10px 0 4px;
+  border-radius: 15px;
+  margin-bottom: 15px;
+
+}
+
+
+nav ul {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+  gap: 15px;
+  padding: 0 40px;
+  list-style: none;
+}
+
+nav ul li {
+  border: 2px solid white;
+  padding: 5px;
+  flex-basis: 100%;
+  text-align: center;
+  border-radius: 10px;
+  background: #6f94c6;
+
+}
+
+nav ul li a {
+  color: wheat;
+  font-size: 20px;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 2px black;
+}
+
+.spec nav ul {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 15px;
+}
+
+h1 {
+  color: wheat;
+  font-size: 30px;
+  margin: 5px 0;
+  text-shadow: 1px 1px 2px black;
+  padding: 10px;
+}
+
+
+.content_right .top {
+  background: #417690;
+  padding: 15px;
+  border-radius: 15px;
+  margin-bottom: 15px;
+}
+
+.top p {
+  color: white;
+  line-height: 25px;
+  font-size: 20px;
+  font-family: 'Open Sans', serif;
+}
+
+h2 a {
+  color: wheat;
+  text-decoration: none;
+  font-size: 30px;
+  text-shadow: 1px 1px 2px black;
+  padding: 5px;
+  display: inline-block;
+}
+
+.news {
+  width: 100%;
+    margin: auto;
+  padding: 20px;
+  background-color: #417690;
+  border: 2px solid white;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+    text-shadow: 1px 1px 2px black;
+}
+
+.random_news {
+  width: 330px;
+  padding: 15px;
+  margin: 10px;
+  border: 3px solid white;
+  border-radius: 10px;
+  background-color: #6f94c6;
+  max-height: 200px;
+  overflow: hidden;
+}
+
+.random_news h4 {
+  margin: 0 0 10px 0;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.random_news h4 a {
+  text-decoration: none;
+  color: wheat;
+}
+
+.random_news p {
+  font-size: 1rem;
+  color: white;
+  margin: 0;
+}
+
+.server-unavailable {
+  font-size: 30px;
+  font-weight: bold;
+  color: wheat;
+}
+
+.footer-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-row > .column {
+  width: 25%;
+}
+
+.footer-row ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-row .footer_title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.footer-row a {
+  color: #777;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.footer-row a:hover {
+  color: #417690;
+  text-decoration: underline;
+}
+
+.footer-row address {
+  font-style: normal;
+  color: #555;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.developer {
+  color: black;
+  font-size: 20px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.developer p {
+  margin: 10px;
+}

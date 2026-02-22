@@ -1,13 +1,15 @@
+{% extends "registrations_visit/base.html" %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Blog - Lista postów</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/post_list.css' %}">
-</head>
-<body>
-    <h1>Nasze wiadomości</h1>
+{% load static %}
+
+{% block title %}Blog - Lista postów{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/post_list.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1>Nasze wiadomości</h1>
 
 {% if posts %}
     {% for post in posts %}
@@ -29,6 +31,4 @@
 <div class="back-link">
     <a href="{% url 'visit:home_page' %}">Powrót do menu rezerwacji</a>
 </div>
-
-</body>
-</html>
+{% endblock %}

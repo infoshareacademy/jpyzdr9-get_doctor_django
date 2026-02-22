@@ -1,17 +1,25 @@
+{% extends "registrations_visit/base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <title>Wizyta potwierdzona</title>
-    <link rel="stylesheet" href="{% static 'css/appointment_success.css' %}">
-</head>
-<body>
-        <div class="login-container">
-            <h1>Wizyta została zarejestrowana!</h1>
-            <p>Możesz teraz wrócić do swojego konta i sprawdzić szczegóły wizyty.</p>
-            <a href="{% url 'visit:home_page' %}">Strona główna</a>
-            <a href="{% url 'booking:appointment' %}">Moje wizyty</a>
-        </div>
-</body>
-</html>
+
+{% block title %}Wizyta potwierdzona{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/appointment_success.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="success-container">
+    <h1>Wizyta została zarejestrowana!</h1>
+
+    <p>
+        Możesz teraz wrócić do swojego konta i sprawdzić szczegóły wizyty.
+    </p>
+
+    <div class="success-buttons">
+        <a href="{% url 'visit:home_page' %}">Strona główna</a>
+{#        <a href="{% url 'booking:appointment' %}">Moje wizyty</a>#}
+    </div>
+</div>
+
+{% endblock %}

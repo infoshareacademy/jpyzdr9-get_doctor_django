@@ -1,17 +1,19 @@
 body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+}
+
+.container {
+  background: white;
+  padding: 5px 20px;
+    max-width: 1600px;
+    margin: 0 auto;;
 }
 
 .section-block {
-    width: 80%;
-    max-width: 1500px;
-    background-color: #417690;
-    border: 2px solid;
-    border-radius: 5px;
+    background-color: whitesmoke;
+    width: 100%;
+    font-size: 20px;
     padding: 20px 30px;
     margin: 25px 0;
     box-sizing: border-box;
@@ -20,39 +22,36 @@ body {
 
 .section-block h1,
 .section-block h2 {
-    margin-top: 0;
+    font-size: 40px;
+    margin-top: 20px;
     margin-bottom: 15px;
     color: wheat;
     text-align: left;
+    text-shadow: 1px 1px 2px black;
 }
 
 
 .section-block p,
 .section-block ul {
-    margin: 10px 0;
+    margin: 10px;
+    text-align: justify;
+    list-style-type: square;
 }
 
-
-.section-block ul {
-    margin-left: 20px;
-}
-
-
-.doctor-item {
-    background-color: #417690;
-    color: wheat;
-    border-radius: 10px;
-    padding: 12px 20px;
-    margin-bottom: 10px;
-}
-
-.doctor-item a {
+span {
+    font-size: 22px;
     text-decoration: none;
     color: wheat;
-    font-weight: bold;
-    font-size: 18px;
+    text-shadow: 1px 1px 2px black;
+    list-style: none;
 }
 
+.down-block p {
+    font-size: 30px;
+    color: wheat;
+    text-shadow: 1px 1px 2px black;
+     text-align: center;
+}
 
 .back-button {
     display: block;

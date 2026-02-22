@@ -3,63 +3,196 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+.container {
+    background: white;
+    padding: 5px 10px;
+    max-width: 1600px;
+    margin: 0 auto;
+}
 
 .page-header {
-    width: 90%;
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #417690;
-    color: wheat;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    width: 100%;
+    margin: 10px;
+    display: flex;
+    justify-content: right;
+    text-shadow: 1px 1px 2px black;
 }
 
 .page-header h1 {
-    margin: 10px;
     font-size: 28px;
+    color: wheat;
 }
 
-.main-content {
-    width: 90%;
-    max-width: 1200px;
-    margin: 40px auto;
+.doctor-card {
     display: flex;
-    justify-content: flex-start;
+    gap: 20px;
+    padding: 20px;
 }
 
-
-.doctor-list {
-    width: 250px;
+.doctor-left {
+    flex: 1;
+    max-width: 400px;
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #417690;
 }
 
-.doctor-list ul {
-    list-style: none;
-    padding: 0;
+.doctor-left h2 {
+    font-size: 30px;
+    color: wheat;
+    text-shadow: 1px 1px 2px black;
+    display: flex;
+    justify-content: left;
+    padding: 5px;
     margin: 0;
 }
 
-.doctor-item {
-    margin: 10px 0;
-    background-color: #417690;
-    border-radius: 10px;
-    padding: 12px 20px;
+.doctor-left p {
+    font-size: 18px;
+    color: black;
+    text-shadow: 1px 1px 2px white;
+    font-weight: bold;
 }
 
-.doctor-item a {
+.doctor-left p strong {
+    font-size: 22px;
+    color: wheat;
+    text-shadow: 1px 1px 2px black;
+}
+
+.doctor-photo {
+    width: 200px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.doctor-right {
+    flex: 1;
+    max-width: 1100px;
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 5px;
+    background-color: #417690;
+}
+
+.doctor-right h3 {
+    font-size: 30px;
+    color: wheat;
+    text-shadow: 1px 1px 2px black;
+    display: flex;
+    justify-content: right;
+    padding: 15px;
+    margin: 5px;
+}
+
+.slots-columns {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 50px;
+}
+
+.day-column {
+    flex: 0 0 120px;
+    height: 460px;
+    border-right: 2px solid black;
+    border-left: 2px solid black;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    padding: 5px 2px;
+    align-items: center;
+}
+
+.day-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.day-header .day-short {
+    font-size: 18px;
+    color: wheat;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px black;
+}
+
+.day-header .day-date {
+    font-size: 20px;
+    color: wheat;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px black;
+}
+
+.day-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.slot-link {
+    display: block;
+    color: wheat!important;
+    text-shadow: 1px 1px 2px black;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 5px 0;
+    margin: 1px;
+}
+
+.slot-link.unavailable {
+    display: block;
+    color: black !important;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 3px 0;
+}
+
+.calendar-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 30px;
     text-decoration: none;
     color: wheat;
     font-weight: bold;
-    font-size: 18px;
+    padding: 30px;
+}
+
+.nav-arrow.left {
+    left: -30px;
+}
+
+.nav-arrow.right {
+    right: -30px;
 }
 
 .back-buttons {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
     display: flex;
     flex-direction: column;
     gap: 12px;
+    margin-top: 20px;
+     align-items: flex-end;
 }
 
 .back-link {
