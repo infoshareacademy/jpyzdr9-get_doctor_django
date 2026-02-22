@@ -38,7 +38,6 @@ body {
     width: 300px;
 }
 
-
 .doctor-photo {
     width: 100%;
     border-radius: 10%;
@@ -93,24 +92,26 @@ body {
 }
 
 .footer-buttons {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
+    margin-top: 30px;
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
     gap: 10px;
 }
 
 .footer-buttons .back-link {
+    width: 260px;
     background-color: #fff;
     border: 2px solid #417690;
     border-radius: 8px;
-    padding: 10px 15px;
-    text-align: center;
 }
 
 .footer-buttons .back-link a {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
     text-decoration: none;
     color: #417690;
     font-weight: bold;
+    text-align: center;
 }
