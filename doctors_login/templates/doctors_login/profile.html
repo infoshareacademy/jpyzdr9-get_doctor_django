@@ -1,0 +1,213 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} – MediPanel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #f0f3f9; --sidebar-bg: #ffffff; --accent: #1e4d8c; --accent-light: #e8eef8;
+            --text-dark: #1a1a1a; --text-mid: #555; --text-light: #999;
+            --border: #dce3ef; --header-h: 64px; --sidebar-w: 240px;
+        }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text-dark); min-height: 100vh; }
+
+        .header { position: fixed; top: 0; left: 0; right: 0; height: var(--header-h); background: var(--sidebar-bg); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 24px; z-index: 100; }
+        .header-logo { font-family: 'Lora', serif; font-size: 1.2rem; color: var(--accent); font-weight: 600; }
+        .header-doctor { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
+        .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem; font-weight: 600; overflow: hidden; }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .header-doctor .name { font-weight: 500; color: var(--text-dark); }
+
+        .sidebar { position: fixed; top: var(--header-h); left: 0; width: var(--sidebar-w); height: calc(100vh - var(--header-h)); background: var(--sidebar-bg); border-right: 1px solid var(--border); padding: 16px 0; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 13px 20px; cursor: pointer; color: var(--text-mid); font-size: 0.92rem; border-left: 3px solid transparent; transition: all 0.15s; text-decoration: none; user-select: none; }
+        .nav-item:hover { background: var(--accent-light); color: var(--text-dark); }
+        .nav-item.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-light); font-weight: 500; }
+        .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; opacity: 0.7; }
+        .nav-item.active svg { opacity: 1; }
+        .nav-arrow { margin-left: auto; transition: transform 0.2s; font-size: 0.75rem; opacity: 0.5; }
+        .nav-arrow.open { transform: rotate(180deg); }
+        .submenu { overflow: hidden; max-height: 0; transition: max-height 0.25s; background: #faf9f7; }
+        .submenu.open { max-height: 300px; }
+        .submenu a { display: flex; align-items: center; gap: 8px; padding: 10px 20px 10px 50px; font-size: 0.87rem; color: var(--text-mid); text-decoration: none; transition: all 0.15s; }
+        .submenu a:hover, .submenu a.active { color: var(--accent); background: var(--accent-light); }
+        .submenu a::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+        .nav-divider { height: 1px; background: var(--border); margin: 8px 16px; }
+
+        .main { margin-left: var(--sidebar-w); margin-top: var(--header-h); padding: 40px 48px; }
+        .page-title { font-family: 'Lora', serif; font-size: 1.7rem; font-weight: 600; margin-bottom: 6px; }
+        .page-subtitle { font-size: 0.9rem; color: var(--text-light); margin-bottom: 36px; }
+
+        .messages-box { margin-bottom: 24px; }
+        .msg { padding: 12px 18px; border-radius: 8px; margin-bottom: 8px; font-size: 0.88rem; }
+        .msg-success { background: #e8f4f0; color: #1e4d8c; border: 1px solid #b8ccf0; }
+        .msg-error { background: #fde8e8; color: #c0392b; border: 1px solid #f5c6c6; }
+        .msg-info { background: #e8eef8; color: #2a4a8b; border: 1px solid #b8ccf0; }
+
+        .profile-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 36px; max-width: 680px; }
+        .profile-header { display: flex; align-items: center; gap: 24px; padding-bottom: 28px; margin-bottom: 28px; border-bottom: 1px solid var(--border); }
+        .profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; color: white; font-family: 'Lora', serif; font-size: 1.8rem; font-weight: 600; flex-shrink: 0; overflow: hidden; }
+        .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .profile-info h2 { font-family: 'Lora', serif; font-size: 1.35rem; margin-bottom: 4px; }
+        .profile-info .email { font-size: 0.88rem; color: var(--text-light); }
+        .spec-badge { display: inline-block; margin-top: 8px; background: var(--accent-light); color: var(--accent); font-size: 0.8rem; padding: 3px 12px; border-radius: 20px; font-weight: 500; }
+
+        .fields-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+        .profile-field { display: flex; flex-direction: column; gap: 5px; }
+        .profile-field.full { grid-column: 1 / -1; }
+        .field-label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-light); font-weight: 500; }
+        .field-value { font-size: 0.92rem; color: var(--text-dark); padding: 10px 14px; background: var(--bg); border-radius: 8px; border: 1px solid var(--border); min-height: 40px; }
+
+        .checkbox-row { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
+        .checkbox-box { width: 20px; height: 20px; border-radius: 5px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .checkbox-box.yes { background: var(--accent); }
+        .checkbox-box.no { background: #e0ddd8; }
+        .checkbox-box svg { width: 12px; height: 12px; color: white; }
+        .checkbox-label { font-size: 0.9rem; color: var(--text-mid); }
+
+        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 24px; border-radius: 8px; font-size: 0.9rem; font-weight: 500; cursor: pointer; border: none; transition: all 0.15s; text-decoration: none; font-family: inherit; }
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-primary:hover { background: #163a6b; }
+
+        @media (max-width: 600px) { .fields-grid { grid-template-columns: 1fr; } .profile-field.full { grid-column: 1; } }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="header-logo">GetDoctorPanel</div>
+    <div class="header-doctor">
+        <div class="avatar">
+            {% if doctor.photo %}
+                <img src="{{ doctor.photo.url }}" alt="foto">
+            {% else %}
+                {{ doctor.first_name|first }}{{ doctor.last_name|first }}
+            {% endif %}
+        </div>
+        <span class="name">Dr {{ doctor.first_name }} {{ doctor.last_name }}</span>
+    </div>
+</header>
+
+<nav class="sidebar">
+    <a href="{% url 'doctor:start' %}" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12L12 3l9 9M4 11v9h5v-5h6v5h5v-9"/></svg>
+        Start
+    </a>
+    <div class="nav-divider"></div>
+    <div class="nav-item active" onclick="toggleSubmenu('sub-user','arrow-user')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        Użytkownik
+        <span class="nav-arrow open" id="arrow-user">▼</span>
+    </div>
+    <div class="submenu open" id="sub-user">
+        <a href="{% url 'doctor:profile' %}" class="active">Profil lekarza</a>
+        <a href="{% url 'doctor:profile_edit' %}">Edytuj profil</a>
+        <a href="{% url 'doctor:logout' %}">Wyloguj</a>
+    </div>
+    <div class="nav-item" onclick="toggleSubmenu('sub-gabinet','arrow-gabinet')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        Gabinet
+        <span class="nav-arrow" id="arrow-gabinet">▼</span>
+    </div>
+    <div class="submenu" id="sub-gabinet">
+        <a href="{% url 'doctor:visits' %}">Wizyty</a>
+    </div>
+</nav>
+
+<main class="main">
+
+    {% if messages %}
+    <div class="messages-box">
+        {% for message in messages %}
+        <div class="msg msg-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="page-title">{{ title }}</div>
+    <div class="page-subtitle">Twoje dane w systemie MediPanel</div>
+
+    <div class="profile-card">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                {% if doctor.photo %}
+                    <img src="{{ doctor.photo.url }}" alt="Zdjęcie profilowe">
+                {% else %}
+                    {{ doctor.first_name|first }}{{ doctor.last_name|first }}
+                {% endif %}
+            </div>
+            <div class="profile-info">
+                <h2>{{ doctor.first_name }} {{ doctor.last_name }}</h2>
+                <p class="email">{{ doctor.email }}</p>
+                {% if doctor.specialization %}
+                    <span class="spec-badge">{{ doctor.specialization }}</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="fields-grid">
+            <div class="profile-field">
+                <div class="field-label">Imię</div>
+                <div class="field-value">{{ doctor.first_name|default:"—" }}</div>
+            </div>
+            <div class="profile-field">
+                <div class="field-label">Nazwisko</div>
+                <div class="field-value">{{ doctor.last_name|default:"—" }}</div>
+            </div>
+            <div class="profile-field">
+                <div class="field-label">E-mail</div>
+                <div class="field-value">{{ doctor.email|default:"—" }}</div>
+            </div>
+            <!-- phone_number – pole z DoctorProfileForm -->
+            <div class="profile-field">
+                <div class="field-label">Telefon</div>
+                <div class="field-value">{{ doctor.phone_number|default:"—" }}</div>
+            </div>
+            <!-- specialization – pole z DoctorProfileForm -->
+            <div class="profile-field">
+                <div class="field-label">Specjalizacja</div>
+                <div class="field-value">{{ doctor.specialization|default:"—" }}</div>
+            </div>
+            <!-- languages – pole z DoctorProfileForm -->
+            <div class="profile-field full">
+                <div class="field-label">Języki</div>
+                <div class="field-value">{{ doctor.languages|default:"—" }}</div>
+            </div>
+        </div>
+
+        <!-- accepts_children – pole z DoctorProfileForm -->
+        <div class="checkbox-row">
+            {% if doctor.accepts_children %}
+                <div class="checkbox-box yes">
+                    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1.5 6 5 9.5 10.5 2.5"/></svg>
+                </div>
+                <span class="checkbox-label">Przyjmuje pacjentów poniżej 18 roku życia</span>
+            {% else %}
+                <div class="checkbox-box no"></div>
+                <span class="checkbox-label" style="color: var(--text-light);">Nie przyjmuje pacjentów poniżej 18 roku życia</span>
+            {% endif %}
+        </div>
+
+        <a href="{% url 'doctor:profile_edit' %}" class="btn btn-primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Edytuj profil
+        </a>
+    </div>
+
+</main>
+
+<script>
+function toggleSubmenu(id, arrowId) {
+    const sub = document.getElementById(id);
+    const arrow = document.getElementById(arrowId);
+    const isOpen = sub.classList.contains('open');
+    document.querySelectorAll('.submenu').forEach(s => s.classList.remove('open'));
+    document.querySelectorAll('.nav-arrow').forEach(a => a.classList.remove('open'));
+    if (!isOpen) { sub.classList.add('open'); arrow.classList.add('open'); }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logowanie – MediPanel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --accent: #1e4d8c;
+            --accent-light: #e8eef8;
+            --accent-mid: #2c5fa8;
+            --bg: #f0f3f9;
+            --white: #ffffff;
+            --text-dark: #1a1e2e;
+            --text-mid: #4a5568;
+            --text-light: #9aa3b2;
+            --border: #dce3ef;
+            --error: #c0392b;
+            --error-bg: #fde8e8;
+        }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: -40%; left: -20%;
+            width: 70vw; height: 70vw;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(30,77,140,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -30%; right: -15%;
+            width: 50vw; height: 50vw;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(44,95,168,0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .login-wrapper {
+            width: 100%;
+            max-width: 420px;
+            animation: fadeUp 0.5s ease both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .brand {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .brand-icon {
+            width: 52px; height: 52px;
+            background: var(--accent);
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 14px;
+            box-shadow: 0 8px 24px rgba(30,77,140,0.25);
+        }
+        .brand-icon svg { width: 26px; height: 26px; color: white; }
+        .brand h1 {
+            font-family: 'Lora', serif;
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+        .brand p {
+            font-size: 0.88rem;
+            color: var(--text-light);
+        }
+
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 36px;
+            box-shadow: 0 4px 32px rgba(30,77,140,0.08);
+        }
+
+        .messages-box { margin-bottom: 20px; }
+        .msg {
+            padding: 11px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+        .msg-error { background: var(--error-bg); color: var(--error); border: 1px solid #f5c6c6; }
+        .msg-success { background: #e8f0fb; color: var(--accent); border: 1px solid #b8ccf0; }
+        .msg-info { background: #e8f0fb; color: var(--accent); border: 1px solid #b8ccf0; }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 18px;
+        }
+        label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 9px;
+            font-size: 0.93rem;
+            font-family: inherit;
+            color: var(--text-dark);
+            background: #fafbfd;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(30,77,140,0.12);
+            background: white;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 13px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 9px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+            margin-top: 8px;
+            letter-spacing: 0.01em;
+        }
+        .btn-submit:hover {
+            background: var(--accent-mid);
+            box-shadow: 0 4px 16px rgba(30,77,140,0.25);
+        }
+        .btn-submit:active { transform: scale(0.98); }
+
+        .card-footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+        .card-footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .card-footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+<div class="login-wrapper">
+    <div class="brand">
+        <div class="brand-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+            </svg>
+        </div>
+        <h1>GetDoctorPanel</h1>
+        <p>Panel lekarza – zaloguj się aby kontynuować</p>
+    </div>
+
+    <div class="card">
+        {% if messages %}
+        <div class="messages-box">
+            {% for message in messages %}
+            <div class="msg msg-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_username">Login</label>
+                <input type="text" name="username" id="id_username"
+                       value="{{ form.username.value|default:'' }}"
+                       placeholder="Nazwa użytkownika"
+                       autocomplete="username">
+                {% if form.username.errors %}
+                    <span style="font-size:0.82rem;color:var(--error);">{{ form.username.errors.0 }}</span>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_password">Hasło</label>
+                <input type="password" name="password" id="id_password"
+                       placeholder="••••••••"
+                       autocomplete="current-password">
+                {% if form.password.errors %}
+                    <span style="font-size:0.82rem;color:var(--error);">{{ form.password.errors.0 }}</span>
+                {% endif %}
+            </div>
+            <button type="submit" class="btn-submit">Zaloguj się</button>
+        </form>
+    </div>
+
+    <div class="card-footer">
+        <a href="{% url 'visit:home_page' %}">← Powrót do strony głównej</a>
+    </div>
+</div>
+</body>
+</html>

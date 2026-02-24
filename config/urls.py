@@ -11,6 +11,7 @@ urlpatterns = [
     path('patients_registration/', include('patients_registration.urls')),
     path('get-doctor/', include('registrations_visit.urls')),
     path('booking/', include('booking.urls')),
+    path('doctor/', include('doctors_login.urls')),
 ]
 
 if settings.DEBUG:

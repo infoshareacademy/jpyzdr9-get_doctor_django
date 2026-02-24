@@ -1,0 +1,290 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gabinet – Wizyty – MediPanel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #f0f3f9; --sidebar-bg: #ffffff; --accent: #1e4d8c; --accent-light: #e8eef8;
+            --text-dark: #1a1e2e; --text-mid: #4a5568; --text-light: #9aa3b2;
+            --border: #dce3ef; --header-h: 64px; --sidebar-w: 240px;
+        }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text-dark); min-height: 100vh; }
+        .header { position: fixed; top: 0; left: 0; right: 0; height: var(--header-h); background: var(--sidebar-bg); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 24px; z-index: 100; }
+        .header-logo { font-family: 'Lora', serif; font-size: 1.2rem; color: var(--accent); font-weight: 600; }
+        .header-doctor { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
+        .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem; font-weight: 600; overflow: hidden; }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .header-doctor .name { font-weight: 500; color: var(--text-dark); }
+        .sidebar { position: fixed; top: var(--header-h); left: 0; width: var(--sidebar-w); height: calc(100vh - var(--header-h)); background: var(--sidebar-bg); border-right: 1px solid var(--border); padding: 16px 0; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 13px 20px; cursor: pointer; color: var(--text-mid); font-size: 0.92rem; border-left: 3px solid transparent; transition: all 0.15s; text-decoration: none; user-select: none; }
+        .nav-item:hover { background: var(--accent-light); color: var(--text-dark); }
+        .nav-item.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-light); font-weight: 500; }
+        .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; opacity: 0.7; }
+        .nav-item.active svg { opacity: 1; }
+        .nav-arrow { margin-left: auto; transition: transform 0.2s; font-size: 0.75rem; opacity: 0.5; }
+        .nav-arrow.open { transform: rotate(180deg); }
+        .submenu { overflow: hidden; max-height: 0; transition: max-height 0.25s; background: #f5f7fc; }
+        .submenu.open { max-height: 300px; }
+        .submenu a { display: flex; align-items: center; gap: 8px; padding: 10px 20px 10px 50px; font-size: 0.87rem; color: var(--text-mid); text-decoration: none; transition: all 0.15s; }
+        .submenu a:hover, .submenu a.active { color: var(--accent); background: var(--accent-light); }
+        .submenu a::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+        .nav-divider { height: 1px; background: var(--border); margin: 8px 16px; }
+        .main { margin-left: var(--sidebar-w); margin-top: var(--header-h); padding: 40px 48px; }
+        .page-title { font-family: 'Lora', serif; font-size: 1.7rem; font-weight: 600; margin-bottom: 6px; }
+        .page-subtitle { font-size: 0.9rem; color: var(--text-light); margin-bottom: 36px; }
+        .messages-box { margin-bottom: 24px; }
+        .msg { padding: 12px 18px; border-radius: 8px; margin-bottom: 8px; font-size: 0.88rem; }
+        .msg-success { background: #e8eef8; color: var(--accent); border: 1px solid #b8ccf0; }
+        .msg-error { background: #fde8e8; color: #c0392b; border: 1px solid #f5c6c6; }
+        .msg-info { background: #e8eef8; color: var(--accent); border: 1px solid #b8ccf0; }
+
+        .section-title { font-size: 1rem; font-weight: 500; color: var(--text-dark); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+        /* Tabela – wspólny styl dla obu sekcji */
+        .table-card { background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 36px; }
+        .table-header { padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); background: #f7f9fd; }
+        .table-header h3 { font-size: 0.95rem; font-weight: 500; }
+        .table-count { font-size: 0.82rem; color: var(--text-light); }
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+        thead th { padding: 11px 20px; text-align: left; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-light); border-bottom: 1px solid var(--border); font-weight: 500; white-space: nowrap; }
+        tbody td { padding: 13px 20px; border-bottom: 1px solid var(--border); color: var(--text-dark); vertical-align: middle; }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:hover { background: #f7f9fd; }
+
+        .patient-cell { display: flex; align-items: center; gap: 10px; }
+        .patient-mini-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--accent-light); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; flex-shrink: 0; }
+
+        .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.78rem; font-weight: 500; }
+        .badge-upcoming { background: #e8eef8; color: #1e4d8c; }
+        .badge-done { background: #f0f0f0; color: #777; }
+
+        .action-btn { background: none; border: none; cursor: pointer; color: var(--text-light); font-size: 0.82rem; padding: 5px 9px; border-radius: 5px; transition: all 0.1s; font-family: inherit; }
+        .action-btn:hover { background: var(--accent-light); color: var(--accent); }
+
+        .empty-state { text-align: center; padding: 36px 20px; color: var(--text-light); font-size: 0.88rem; }
+        .empty-state svg { width: 32px; height: 32px; margin-bottom: 10px; opacity: 0.3; display: block; margin-inline: auto; }
+
+        /* Filtry */
+        .filters { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+        .filter-link { padding: 7px 16px; border-radius: 20px; font-size: 0.83rem; border: 1.5px solid var(--border); background: white; color: var(--text-mid); text-decoration: none; transition: all 0.15s; }
+        .filter-link:hover { border-color: var(--accent); color: var(--accent); }
+        .filter-link.active { background: var(--accent); color: white; border-color: var(--accent); font-weight: 500; }
+
+        .pagination { display: flex; align-items: center; justify-content: flex-end; gap: 6px; padding: 14px 20px; border-top: 1px solid var(--border); }
+        .page-link { width: 32px; height: 32px; border-radius: 6px; border: 1px solid var(--border); background: white; font-size: 0.85rem; color: var(--text-mid); display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.1s; }
+        .page-link:hover { border-color: var(--accent); color: var(--accent); }
+        .page-link.active { background: var(--accent); color: white; border-color: var(--accent); pointer-events: none; }
+        .page-link.disabled { opacity: 0.35; pointer-events: none; }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="header-logo">GetDoctorPanel</div>
+    <div class="header-doctor">
+        <div class="avatar">
+            {% if doctor.photo %}
+                <img src="{{ doctor.photo.url }}" alt="foto">
+            {% else %}
+                {{ doctor.first_name|first }}{{ doctor.last_name|first }}
+            {% endif %}
+        </div>
+        <span class="name">Dr {{ doctor.first_name }} {{ doctor.last_name }}</span>
+    </div>
+</header>
+
+<nav class="sidebar">
+    <a href="{% url 'doctor:start' %}" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12L12 3l9 9M4 11v9h5v-5h6v5h5v-9"/></svg>
+        Start
+    </a>
+    <div class="nav-divider"></div>
+    <div class="nav-item" onclick="toggleSubmenu('sub-user','arrow-user')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        Użytkownik
+        <span class="nav-arrow" id="arrow-user">▼</span>
+    </div>
+    <div class="submenu" id="sub-user">
+        <a href="{% url 'doctor:profile' %}">Profil lekarza</a>
+        <a href="{% url 'doctor:profile_edit' %}">Edytuj profil</a>
+        <a href="{% url 'doctor:logout' %}">Wyloguj</a>
+    </div>
+    <div class="nav-item active" onclick="toggleSubmenu('sub-gabinet','arrow-gabinet')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        Gabinet
+        <span class="nav-arrow open" id="arrow-gabinet">▼</span>
+    </div>
+    <div class="submenu open" id="sub-gabinet">
+        <a href="{% url 'doctor:visits' %}" class="active">Wizyty</a>
+    </div>
+</nav>
+
+<main class="main">
+
+    {% if messages %}
+    <div class="messages-box">
+        {% for message in messages %}
+        <div class="msg msg-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="page-title">Gabinet – Wizyty</div>
+    <div class="page-subtitle">{{ today|date:"l, j F Y" }}</div>
+
+    <!-- ══ WIZYTY NA DZIŚ ══ -->
+    <div class="section-title">Wizyty na dziś</div>
+    <div class="table-card">
+        <div class="table-header">
+            <h3>Dzisiejszy harmonogram</h3>
+            <span class="table-count">{{ visits_today|length }} wizyt</span>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pacjent</th>
+                        <th>Godzina</th>
+                        <th>Status</th>
+                        <th>Akcje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appointment in visits_today %}
+                    <tr>
+                        <td>
+                            <div class="patient-cell">
+                                <div class="patient-mini-avatar">
+                                    {{ appointment.patient.first_name|first }}{{ appointment.patient.last_name|first }}
+                                </div>
+                                {{ appointment.patient.first_name }} {{ appointment.patient.last_name }}
+                            </div>
+                        </td>
+                        <td>{{ appointment.slot.start_datetime|time:"H:i" }}</td>
+                        <td>
+                            {% if appointment.slot.start_datetime >= now %}
+                                <span class="badge badge-upcoming">Nadchodząca</span>
+                            {% else %}
+                                <span class="badge badge-done">Odbyła się</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <button class="action-btn">Szczegóły</button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">
+                            <div class="empty-state">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                                Brak wizyt na dziś.
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ══ WSZYSTKIE WIZYTY ══ -->
+    <div class="section-title">Wszystkie wizyty</div>
+
+    <div class="filters">
+        <a href="{% url 'doctor:visits' %}"
+           class="filter-link {% if status == 'all' %}active{% endif %}">Wszystkie</a>
+        <a href="{% url 'doctor:visits' %}?status=upcoming"
+           class="filter-link {% if status == 'upcoming' %}active{% endif %}">Nadchodzące</a>
+        <a href="{% url 'doctor:visits' %}?status=done"
+           class="filter-link {% if status == 'done' %}active{% endif %}">Przeszłe</a>
+    </div>
+
+    <div class="table-card">
+        <div class="table-header">
+            <h3>Lista wizyt</h3>
+            <span class="table-count">{{ visits|length }} wizyt</span>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pacjent</th>
+                        <th>Data</th>
+                        <th>Godzina</th>
+                        <th>Status</th>
+                        <th>Akcje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appointment in visits %}
+                    <tr>
+                        <td>
+                            <div class="patient-cell">
+                                <div class="patient-mini-avatar">
+                                    {{ appointment.patient.first_name|first }}{{ appointment.patient.last_name|first }}
+                                </div>
+                                {{ appointment.patient.first_name }} {{ appointment.patient.last_name }}
+                            </div>
+                        </td>
+                        <td>{{ appointment.slot.start_datetime|date:"d.m.Y" }}</td>
+                        <td>{{ appointment.slot.start_datetime|time:"H:i" }}</td>
+                        <td>
+                            {% if appointment.slot.start_datetime >= now %}
+                                <span class="badge badge-upcoming">Nadchodząca</span>
+                            {% else %}
+                                <span class="badge badge-done">Przeszła</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <button class="action-btn">Szczegóły</button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">
+                            <div class="empty-state">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                                Brak wizyt w tej kategorii.
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if page_obj and page_obj.paginator.num_pages > 1 %}
+        <div class="pagination">
+            <a href="?page={{ page_obj.previous_page_number }}{% if status %}&status={{ status }}{% endif %}"
+               class="page-link {% if not page_obj.has_previous %}disabled{% endif %}">‹</a>
+            {% for num in page_obj.paginator.page_range %}
+                <a href="?page={{ num }}{% if status %}&status={{ status }}{% endif %}"
+                   class="page-link {% if page_obj.number == num %}active{% endif %}">{{ num }}</a>
+            {% endfor %}
+            <a href="?page={{ page_obj.next_page_number }}{% if status %}&status={{ status }}{% endif %}"
+               class="page-link {% if not page_obj.has_next %}disabled{% endif %}">›</a>
+        </div>
+        {% endif %}
+    </div>
+
+</main>
+
+<script>
+function toggleSubmenu(id, arrowId) {
+    const sub = document.getElementById(id);
+    const arrow = document.getElementById(arrowId);
+    const isOpen = sub.classList.contains('open');
+    document.querySelectorAll('.submenu').forEach(s => s.classList.remove('open'));
+    document.querySelectorAll('.nav-arrow').forEach(a => a.classList.remove('open'));
+    if (!isOpen) { sub.classList.add('open'); arrow.classList.add('open'); }
+}
+</script>
+</body>
+</html>

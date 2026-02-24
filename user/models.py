@@ -7,8 +7,8 @@ class User(AbstractUser):
         ('patient', 'Patient'),
         ('admin', 'Admin'),
     ]
-    #role = models.CharField(max_length=20, choices=ROLE_CHOICES)
-    role = models.CharField(max_length=20)
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES)
+    #role = models.CharField(max_length=20)
     pesel = models.CharField(max_length=11, unique=True)
     sex = models.CharField(max_length=10, choices=[('M', 'Male'), ('F', 'Female')])
     phone_number = models.CharField(max_length=15)
