@@ -3,14 +3,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, logout
 from django.views.generic import FormView, TemplateView, View, UpdateView
 from django.urls import reverse_lazy
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from .forms import DoctorProfileForm
 from booking.models import Appointment
 import logging
-
 
 logger = logging.getLogger(__name__)
 User = get_user_model()
@@ -139,7 +138,6 @@ class DoctorVisitsView(LoginRequiredMixin, TemplateView):
         today = timezone.localdate()
         doctor = self.request.user
 
-
         all_appointments = (
             Appointment.objects
             .filter(slot__doctor=doctor)
@@ -147,17 +145,15 @@ class DoctorVisitsView(LoginRequiredMixin, TemplateView):
             .order_by('slot__start_datetime')
         )
 
-
         status = self.request.GET.get('status', 'all')
         if status == 'upcoming':
             visits = all_appointments.filter(slot__start_datetime__gte=now)
         elif status == 'done':
             visits = all_appointments.filter(slot__start_datetime__lt=now)
         elif status == 'cancelled':
-            visits = all_appointments.none()  # brak pola cancelled
+            visits = all_appointments.none()
         else:
             visits = all_appointments
-
 
         visits_today = all_appointments.filter(
             slot__start_datetime__date=today
@@ -169,5 +165,42 @@ class DoctorVisitsView(LoginRequiredMixin, TemplateView):
         context['visits'] = visits
         context['visits_today'] = visits_today
         context['now'] = now
+
+        return context
+
+
+class DoctorAppointmentDetailView(LoginRequiredMixin, TemplateView):
+    template_name = 'doctors_login/appointment_detail.html'
+    login_url = reverse_lazy('doctor:login')
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and str(request.user.role).lower() != 'doctor':
+            messages.error(request, 'Brak dostępu')
+            return redirect('visit:home_page')
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        appointment = get_object_or_404(
+            Appointment,
+            pk=self.kwargs.get('pk'),
+            slot__doctor=self.request.user
+        )
+
+        past_appointments = (
+            Appointment.objects
+            .filter(
+                patient=appointment.patient,
+                slot__doctor=self.request.user,
+                slot__start_datetime__lt=appointment.slot.start_datetime
+            )
+            .select_related('slot')
+            .order_by('-slot__start_datetime')[:10]
+        )
+
+        context['doctor'] = self.request.user
+        context['appointment'] = appointment
+        context['past_appointments'] = past_appointments
 
         return context
