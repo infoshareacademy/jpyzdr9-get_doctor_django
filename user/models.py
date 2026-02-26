@@ -7,8 +7,7 @@ class User(AbstractUser):
         ('patient', 'Patient'),
         ('admin', 'Admin'),
     ]
-    #role = models.CharField(max_length=20, choices=ROLE_CHOICES)
-    role = models.CharField(max_length=20)
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES)
     pesel = models.CharField(max_length=11, unique=True)
     sex = models.CharField(max_length=10, choices=[('M', 'Male'), ('F', 'Female')])
     phone_number = models.CharField(max_length=15)
@@ -25,6 +24,15 @@ class User(AbstractUser):
     emergency_contact = models.CharField(max_length=15, blank=True)
     blood_type = models.CharField(max_length=5, blank=True)
     allergies = models.TextField(blank=True)
+
+    def _set_sex_from_pesel(self):
+        if self.pesel and len(self.pesel) == 11:
+            gender_digit = int(self.pesel[9])
+            self.sex = 'F' if gender_digit % 2 == 0 else 'M'
+
+    def save(self, *args, **kwargs):
+        self._set_sex_from_pesel()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.username}"

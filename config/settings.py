@@ -136,6 +136,11 @@ LOGIN_URL = 'patients_login'
 LOGIN_REDIRECT_URL = 'patients_login_dashboard'
 LOGOUT_REDIRECT_URL = 'patients_login'
 
+# Ustawienia sesji (autowylogowanie)
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 1800
+SESSION_SAVE_EVERY_REQUEST = True
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
