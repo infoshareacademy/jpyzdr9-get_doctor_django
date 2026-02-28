@@ -22,7 +22,6 @@
                 <ol>
                     {% for appointment in upcoming_appointments %}
                         <li>
-                            <p><strong>Pacjent:</strong> {{ appointment.patient.get_full_name|default:appointment.patient.username }}</p>
                             <p><strong>Lekarz:</strong> {{ appointment.slot.doctor.get_full_name|default:appointment.slot.doctor.username }}</p>
                             <p><strong>Specjalizacja:</strong> {{ appointment.slot.doctor.specialization }}</p>
                             <p><strong>Data:</strong> {{ appointment.slot.start_datetime|date:"d.m.Y" }}</p>
@@ -45,11 +44,10 @@
                 <ol>
                     {% for appointment in past_appointments %}
                         <li>
-                            <p>Lekarz: {{ appointment.slot.doctor.get_full_name|default:appointment.slot.doctor.username }}</p>
-                            <p>Specjalizacja: {{ appointment.slot.doctor.specialization }}</p>
-                            <p>Data: {{ appointment.slot.start_datetime|date:"d.m.Y" }}</p>
-                            <p>Godzina: {{ appointment.slot.start_datetime|date:"H:i" }}</p>
-                            <p>Wizyta zakończona</p>
+                            <p><strong>Lekarz:</strong>{{ appointment.slot.doctor.get_full_name|default:appointment.slot.doctor.username }}</p>
+                            <p><strong>Specjalizacja:</strong>{{ appointment.slot.doctor.specialization }}</p>
+                            <p><strong>Data:</strong>{{ appointment.slot.start_datetime|date:"d.m.Y" }}</p>
+                            <p><strong>Godzina:</strong>{{ appointment.slot.start_datetime|date:"H:i" }}</p>
                         </li>
                     {% endfor %}
                 </ol>
