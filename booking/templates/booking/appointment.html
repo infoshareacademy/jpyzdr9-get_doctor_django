@@ -48,10 +48,9 @@
                             <p>Lekarz: {{ appointment.slot.doctor.get_full_name|default:appointment.slot.doctor.username }}</p>
                             <p>Specjalizacja: {{ appointment.slot.doctor.specialization }}</p>
                             <p>Data: {{ appointment.slot.start_datetime|date:"d.m.Y" }}</p>
-                            <p>Godzina: {{ appointment.slot.start_datetime|date:"H:i" }} – {{ appointment.slot.end_datetime|date:"H:i" }}</p>
+                            <p>Godzina: {{ appointment.slot.start_datetime|date:"H:i" }}</p>
                             <p>Wizyta zakończona</p>
                         </li>
-                        <hr>
                     {% endfor %}
                 </ol>
             {% else %}
