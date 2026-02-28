@@ -15,6 +15,7 @@ class Appointment(models.Model):
         related_name='appointment'
     )
     created_at = models.DateTimeField(auto_now_add=True)
+    doctor_notes = models.TextField(blank=True)
 
     def save(self, *args, **kwargs):
         self.slot.is_booked = True
