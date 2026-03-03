@@ -1,13 +1,14 @@
 from django import forms
 from .models import Appointment
 
-class AppointmentNotesForm(forms.ModelForm):
+class AppointmentDoctorForm(forms.ModelForm):
     class Meta:
         model = Appointment
-        fields = ['notes']
+        fields = ['doctor_notes']
         widgets = {
-            'notes': forms.Textarea(attrs={
-                'rows': 4,
-                'placeholder': 'Dodaj notatki...'
+            'doctor_notes': forms.Textarea(attrs={
+                'class': 'visit-textarea',
+                'rows': 5,
+                'placeholder': 'Wpisz notatki lekarza...'
             })
         }
