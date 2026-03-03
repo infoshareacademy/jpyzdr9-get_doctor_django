@@ -11,6 +11,9 @@ from .forms import DoctorProfileForm
 from booking.models import Appointment
 import logging
 from booking.forms import AppointmentDoctorForm
+from registrations_visit.models import TimeSlot
+from datetime import datetime, time, timedelta
+from django.utils import timezone
 
 logger = logging.getLogger(__name__)
 User = get_user_model()
@@ -139,6 +142,7 @@ class DoctorVisitsView(LoginRequiredMixin, TemplateView):
         today = timezone.localdate()
         doctor = self.request.user
 
+
         all_appointments = (
             Appointment.objects
             .filter(slot__doctor=doctor)
@@ -156,19 +160,44 @@ class DoctorVisitsView(LoginRequiredMixin, TemplateView):
         else:
             visits = all_appointments
 
-        visits_today = all_appointments.filter(
-            slot__start_datetime__date=today
-        )
+        visits_today = all_appointments.filter(slot__start_datetime__date=today)
 
-        context['doctor'] = doctor
-        context['today'] = today
-        context['status'] = status
-        context['visits'] = visits
-        context['visits_today'] = visits_today
-        context['now'] = now
+        TOTAL_DAYS = 14
+        WORK_START = time(8, 0)
+        WORK_END = time(14, 0)
+        SLOT_INTERVAL = timedelta(minutes=30)
+
+        next_days = [today + timedelta(days=i) for i in range(TOTAL_DAYS)]
+
+        doctor.week_schedule = []
+        for day in next_days:
+            day_slots = []
+            existing_slots = TimeSlot.objects.filter(doctor=doctor, start_datetime__date=day)
+            existing_dict = {timezone.localtime(slot.start_datetime).time(): slot for slot in existing_slots}
+
+            current_time = timezone.make_aware(datetime.combine(day, WORK_START))
+            end_time = timezone.make_aware(datetime.combine(day, WORK_END))
+
+            while current_time < end_time:
+                slot_time = current_time.time()
+                day_slots.append(existing_dict.get(slot_time))
+                current_time += SLOT_INTERVAL
+
+            doctor.week_schedule.append({
+                'date': day,
+                'slots': day_slots
+            })
+
+        context.update({
+            'doctor': doctor,
+            'today': today,
+            'status': status,
+            'visits': visits,
+            'visits_today': visits_today,
+            'now': now,
+        })
 
         return context
-
 
 class DoctorAppointmentDetailView(LoginRequiredMixin, TemplateView):
     template_name = 'doctors_login/appointment_detail.html'
