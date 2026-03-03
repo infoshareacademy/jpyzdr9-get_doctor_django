@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Appointment Notes</title>
+</head>
+<body>
+
+<h1>Appointment Notes</h1>
+
+{% for note in notes %}
+    <div style="margin-bottom: 20px; padding: 10px; border: 1px solid #ccc;">
+        <p>Patient: {{ note.patient.get_full_name }}</p>
+        <p>Visit Date: {{ note.slot.start_datetime }}</p>
+        <p>Booking Date: {{ note.created_at }}</p>
+        <p>Doctor Notes:<br>{{ note.doctor_notes|linebreaks|default:"—" }}</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="appointment_id" value="{{ note.id }}">
+            {{ form.doctor_notes }}
+            <br>
+            <button type="submit">Add Note</button>
+        </form>
+    </div>
+{% empty %}
+    <p>No appointments found.</p>
+{% endfor %}
+
+</body>
+</html>
