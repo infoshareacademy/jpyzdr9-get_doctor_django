@@ -10,6 +10,7 @@ from django.utils import timezone
 from .forms import DoctorProfileForm
 from booking.models import Appointment
 import logging
+from booking.forms import AppointmentDoctorForm
 
 logger = logging.getLogger(__name__)
 User = get_user_model()
@@ -179,14 +180,17 @@ class DoctorAppointmentDetailView(LoginRequiredMixin, TemplateView):
             return redirect('visit:home_page')
         return super().dispatch(request, *args, **kwargs)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        appointment = get_object_or_404(
+    def get_appointment(self):
+        return get_object_or_404(
             Appointment,
             pk=self.kwargs.get('pk'),
             slot__doctor=self.request.user
         )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        appointment = self.get_appointment()
 
         past_appointments = (
             Appointment.objects
@@ -202,5 +206,19 @@ class DoctorAppointmentDetailView(LoginRequiredMixin, TemplateView):
         context['doctor'] = self.request.user
         context['appointment'] = appointment
         context['past_appointments'] = past_appointments
+        context['form'] = AppointmentDoctorForm(instance=appointment)
 
         return context
+
+    def post(self, request, *args, **kwargs):
+        appointment = self.get_appointment()
+        form = AppointmentDoctorForm(request.POST, instance=appointment)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Notatka zapisana.")
+            return redirect('doctor:appointment_detail', pk=appointment.pk)
+
+        context = self.get_context_data()
+        context['form'] = form
+        return self.render_to_response(context)

@@ -39,50 +39,13 @@
         .nav-divider { height: 1px; background: var(--border); margin: 8px 16px; }
 
         /* ── STRONA GŁÓWNA ── */
-        .page-wrap {
-            margin-left: var(--sidebar-w);
-            margin-top: var(--header-h);
-            min-height: calc(100vh - var(--header-h));
-            position: relative;
-        }
+        .page-wrap { margin-left: var(--sidebar-w); margin-top: var(--header-h); min-height: calc(100vh - var(--header-h)); position: relative; }
 
         /* ── PASEK PACJENTA ── */
-        .patient-bar {
-            background: var(--accent);
-            color: white;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .burger-btn {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            padding: 4px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            flex-shrink: 0;
-        }
-        .burger-btn span {
-            display: block;
-            width: 20px;
-            height: 2px;
-            background: white;
-            border-radius: 2px;
-            transition: all 0.2s;
-        }
-        .patient-bar-name {
-            font-family: 'Lora', serif;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
+        .patient-bar { background: var(--accent); color: white; padding: 10px 20px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+        .burger-btn { background: none; border: none; color: white; cursor: pointer; padding: 4px; display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
+        .burger-btn span { display: block; width: 20px; height: 2px; background: white; border-radius: 2px; transition: all 0.2s; }
+        .patient-bar-name { font-family: 'Lora', serif; font-size: 1rem; font-weight: 600; cursor: pointer; }
         .patient-bar-name:hover { text-decoration: underline; }
         .patient-bar-meta { font-size: 0.82rem; opacity: 0.8; }
         .ewus { display: inline-block; background: #27ae60; color: white; font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 3px; margin-left: 8px; }
@@ -91,74 +54,22 @@
         .back-link:hover { opacity: 1; text-decoration: underline; }
 
         /* ── WYSUWANE MENU PACJENTA (burger) ── */
-        .patient-menu-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.3);
-            z-index: 150;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s;
-        }
-        .patient-menu-overlay.open {
-            opacity: 1;
-            pointer-events: all;
-        }
-        .patient-menu {
-            position: fixed;
-            top: var(--header-h);
-            left: var(--sidebar-w);
-            width: 200px;
-            background: white;
-            border-right: 1px solid var(--border);
-            height: calc(100vh - var(--header-h));
-            z-index: 160;
-            transform: translateX(-100%);
-            transition: transform 0.25s ease;
-            overflow-y: auto;
-            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
-        }
+        .patient-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 150; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+        .patient-menu-overlay.open { opacity: 1; pointer-events: all; }
+        .patient-menu { position: fixed; top: var(--header-h); left: var(--sidebar-w); width: 200px; background: white; border-right: 1px solid var(--border); height: calc(100vh - var(--header-h)); z-index: 160; transform: translateX(-100%); transition: transform 0.25s ease; overflow-y: auto; box-shadow: 4px 0 20px rgba(0,0,0,0.1); }
         .patient-menu.open { transform: translateX(0); }
-
-        .patient-menu-header {
-            background: var(--accent);
-            color: white;
-            padding: 14px 16px;
-        }
+        .patient-menu-header { background: var(--accent); color: white; padding: 14px 16px; }
         .patient-menu-header .name { font-family: 'Lora', serif; font-size: 0.92rem; font-weight: 600; margin-bottom: 3px; }
         .patient-menu-header .meta { font-size: 0.78rem; opacity: 0.8; }
-
-        .patient-menu-item {
-            display: block;
-            padding: 11px 16px;
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: white;
-            background: var(--accent);
-            text-decoration: none;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.12s;
-            border-bottom: 1px solid rgba(255,255,255,0.15);
-        }
-        .patient-menu-item:hover { background: #163a6b; }
-        .patient-menu-item.active { background: #163a6b; }
+        .patient-menu-item { display: block; padding: 11px 16px; font-size: 0.82rem; font-weight: 600; color: white; background: var(--accent); text-decoration: none; letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; transition: all 0.12s; border-bottom: 1px solid rgba(255,255,255,0.15); }
+        .patient-menu-item:hover, .patient-menu-item.active { background: #163a6b; }
 
         /* ── TREŚĆ – 3 KOLUMNY ── */
-        .content-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 14px;
-            padding: 20px;
-        }
+        .content-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; padding: 20px; }
 
         /* ── SEKCJA ── */
         .section { background: white; border-radius: 8px; border: 1px solid var(--border); overflow: hidden; }
         .section-bar { background: var(--accent); color: white; padding: 9px 14px; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; display: flex; align-items: center; justify-content: space-between; }
-        .section-bar-actions { display: flex; gap: 4px; }
-        .section-bar-btn { background: rgba(255,255,255,0.2); border: none; color: white; width: 22px; height: 22px; border-radius: 3px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; transition: background 0.1s; }
-        .section-bar-btn:hover { background: rgba(255,255,255,0.4); }
         .section-body { padding: 12px; }
 
         .template-row { margin-bottom: 10px; }
@@ -191,19 +102,16 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <header class="header">
     <div class="header-logo">GetDoctorPanel</div>
     <div class="header-doctor">
         <div class="avatar">
-            {% if doctor.photo %}<img src="{{ doctor.photo.url }}" alt="foto">
-            {% else %}{{ doctor.first_name|first }}{{ doctor.last_name|first }}{% endif %}
+            {% if doctor.photo %}<img src="{{ doctor.photo.url }}" alt="foto">{% else %}{{ doctor.first_name|first }}{{ doctor.last_name|first }}{% endif %}
         </div>
         <span class="name">Dr {{ doctor.first_name }} {{ doctor.last_name }}</span>
     </div>
 </header>
 
-<!-- SIDEBAR -->
 <nav class="sidebar">
     <a href="{% url 'doctor:start' %}" class="nav-item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12L12 3l9 9M4 11v9h5v-5h6v5h5v-9"/></svg>
@@ -228,7 +136,6 @@
     </div>
 </nav>
 
-<!-- WYSUWANE MENU PACJENTA -->
 <div class="patient-menu-overlay" id="overlay" onclick="closeMenu()"></div>
 <div class="patient-menu" id="patientMenu">
     <div class="patient-menu-header">
@@ -243,157 +150,85 @@
     <a class="patient-menu-item">Dokumentacja zdjęciowa</a>
 </div>
 
-<!-- STRONA -->
 <div class="page-wrap">
-
-    <!-- PASEK PACJENTA -->
     <div class="patient-bar">
-        <button class="burger-btn" onclick="toggleMenu()" title="Menu pacjenta">
-            <span></span><span></span><span></span>
-        </button>
+        <button class="burger-btn" onclick="toggleMenu()" title="Menu pacjenta"><span></span><span></span><span></span></button>
         <div>
-            <div class="patient-bar-name" onclick="toggleMenu()">
-                {{ appointment.patient.first_name }} {{ appointment.patient.last_name }}
-                <span class="ewus">eWUŚ ✓</span>
-            </div>
+            <div class="patient-bar-name" onclick="toggleMenu()">{{ appointment.patient.first_name }} {{ appointment.patient.last_name }} <span class="ewus">eWUŚ ✓</span></div>
             <div class="patient-bar-meta">{{ appointment.slot.start_datetime|date:"d.m.Y" }}, {{ appointment.slot.start_datetime|time:"H:i" }}</div>
         </div>
         <div class="patient-bar-contact">
-            {% if appointment.patient.phone_number %}☎ {{ appointment.patient.phone_number }}<br>{% endif %}
-            {{ appointment.patient.email }}
+            {% if appointment.patient.phone_number %}☎ {{ appointment.patient.phone_number }}<br>{% endif %}{{ appointment.patient.email }}
         </div>
         <a href="{% url 'doctor:visits' %}" class="back-link">← Powrót</a>
     </div>
 
-    <!-- 3 KOLUMNY -->
-    <div class="content-grid">
+    <form method="post">
+        {% csrf_token %}
+        <div class="content-grid">
 
-        <!-- KOLUMNA 1: Wywiad + Rozpoznania -->
-        <div>
-            <div class="section" style="margin-bottom:14px;">
-                <div class="section-bar">
-                    Wywiad
-                    <div class="section-bar-actions">
-                        <button class="section-bar-btn">💾</button>
-                        <button class="section-bar-btn">⚙</button>
+            <!-- KOLUMNA 1 -->
+            <div>
+                <div class="section" style="margin-bottom:14px;">
+                    <div class="section-bar">Wywiad</div>
+                    <div class="section-body">
+                        <div class="template-row"><select class="template-select"><option value="">Szablony</option></select></div>
+                        <textarea class="visit-textarea" name="wywiad" rows="6">{{ appointment.wywiad|default:'' }}</textarea>
                     </div>
                 </div>
-                <div class="section-body">
-                    <div class="template-row">
-                        <select class="template-select"><option value="">Szablony</option></select>
+
+                <div class="section">
+                    <div class="section-bar">Rozpoznania</div>
+                    <div class="section-body">
+                        <div class="icd-empty" id="icd-empty">Brak</div>
+                        <div id="icd-list" style="margin-top:8px;"></div>
                     </div>
-                    <textarea class="visit-textarea" name="wywiad" rows="6" placeholder="Wpisz wywiad...">{{ appointment.wywiad|default:'' }}</textarea>
                 </div>
             </div>
 
-            <div class="section">
-                <div class="section-bar">
-                    Rozpoznania
-                    <div class="section-bar-actions">
-                        <button class="section-bar-btn" onclick="showIcdInput()">＋</button>
-                    </div>
-                </div>
-                <div class="section-body">
-                    <div class="icd-empty" id="icd-empty">Brak</div>
-                    <div class="icd-row" id="icd-row" style="display:none;">
-                        <input type="text" class="icd-input" id="icd-input" placeholder="Wprowadź kod ICD-10">
-                        <button class="icd-add" onclick="addIcd()">+</button>
-                    </div>
-                    <div id="icd-list" style="margin-top:8px;"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- KOLUMNA 2: Badanie fizykalne + Zalecenia dodatkowe -->
-        <div>
-            <div class="section" style="margin-bottom:14px;">
-                <div class="section-bar">
-                    Badanie fizykalne
-                    <div class="section-bar-actions">
-                        <button class="section-bar-btn">💾</button>
-                        <button class="section-bar-btn">⚙</button>
-                    </div>
-                </div>
-                <div class="section-body">
-                    <div class="template-row">
-                        <select class="template-select"><option value="">Szablony</option></select>
-                    </div>
-                    <textarea class="visit-textarea" name="badanie" rows="5" placeholder="Wpisz wyniki badania...">{{ appointment.badanie_fizykalne|default:'' }}</textarea>
-                    <div class="bmi-row">
-                        <div class="bmi-field">
-                            <span class="bmi-label">Waga (kg)</span>
-                            <input type="number" class="bmi-input" name="waga" placeholder="—" value="{{ appointment.waga|default:'' }}">
-                        </div>
-                        <div class="bmi-field">
-                            <span class="bmi-label">Wzrost (cm)</span>
-                            <input type="number" class="bmi-input" name="wzrost" placeholder="—" value="{{ appointment.wzrost|default:'' }}">
-                        </div>
-                        <div class="bmi-field">
-                            <span class="bmi-label">BMI</span>
-                            <input type="text" class="bmi-input" id="bmi-result" placeholder="—" readonly>
+            <!-- KOLUMNA 2 -->
+            <div>
+                <div class="section" style="margin-bottom:14px;">
+                    <div class="section-bar">Badanie fizykalne</div>
+                    <div class="section-body">
+                        <textarea class="visit-textarea" name="badanie" rows="5">{{ appointment.badanie_fizykalne|default:'' }}</textarea>
+                        <div class="bmi-row">
+                            <div class="bmi-field"><span class="bmi-label">Waga (kg)</span><input type="number" class="bmi-input" name="waga" value="{{ appointment.waga|default:'' }}"></div>
+                            <div class="bmi-field"><span class="bmi-label">Wzrost (cm)</span><input type="number" class="bmi-input" name="wzrost" value="{{ appointment.wzrost|default:'' }}"></div>
+                            <div class="bmi-field"><span class="bmi-label">BMI</span><input type="text" class="bmi-input" id="bmi-result" readonly></div>
                         </div>
                     </div>
                 </div>
+
+                <div class="section">
+                    <div class="section-bar">Zalecenia dodatkowe</div>
+                    <div class="section-body">{{ form.doctor_notes }}</div>
+                </div>
             </div>
 
-            <div class="section">
-                <div class="section-bar">
-                    Zalecenia dodatkowe
-                    <div class="section-bar-actions">
-                        <button class="section-bar-btn">🖨</button>
-                        <button class="section-bar-btn">💾</button>
-                        <button class="section-bar-btn">⚙</button>
+            <!-- KOLUMNA 3 -->
+            <div>
+                <div class="section" style="margin-bottom:14px;">
+                    <div class="section-bar">Ostatnie wizyty</div>
+                    <div class="section-body" style="padding:0;">
+                        {% for past in past_appointments %}
+                        <div class="last-visit-item" style="padding:8px 12px;"><span class="last-visit-date">{{ past.slot.start_datetime|date:"d.m.Y" }}</span> <span style="color:var(--text-light);font-size:0.8rem;">{{ past.slot.start_datetime|time:"H:i" }}</span></div>
+                        {% empty %}
+                        <div style="padding:12px;font-size:0.83rem;color:var(--text-light);">Brak poprzednich wizyt.</div>
+                        {% endfor %}
                     </div>
                 </div>
-                <div class="section-body">
-                    <div class="template-row">
-                        <select class="template-select"><option value="">Szablony</option></select>
-                    </div>
-                    <textarea class="visit-textarea" name="zalecenia" rows="5" placeholder="Wpisz zalecenia...">{{ appointment.zalecenia|default:'' }}</textarea>
+
+                <div class="section">
+                    <div class="section-bar">Badania diagnostyczne</div>
+                    <div class="section-body"><div class="icd-empty">Brak wpisów</div></div>
                 </div>
             </div>
+
         </div>
 
-        <!-- KOLUMNA 3: Ostatnie wizyty + Badania diagnostyczne -->
-        <div>
-            <div class="section" style="margin-bottom:14px;">
-                <div class="section-bar">
-                    Ostatnie wizyty
-                    <div class="section-bar-actions">
-                        <button class="section-bar-btn">☰</button>
-                    </div>
-                </div>
-                <div class="section-body" style="padding:0;">
-                    {% for past in past_appointments %}
-                    <div class="last-visit-item" style="padding:8px 12px;">
-                        <span class="last-visit-date">{{ past.slot.start_datetime|date:"d.m.Y" }}</span>
-                        <span style="color:var(--text-light);font-size:0.8rem;"> {{ past.slot.start_datetime|time:"H:i" }}</span>
-                    </div>
-                    {% empty %}
-                    <div style="padding:12px;font-size:0.83rem;color:var(--text-light);">Brak poprzednich wizyt.</div>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <div class="section">
-                <div class="section-bar">
-                    Badania diagnostyczne
-                    <div class="section-bar-actions">
-                        <button class="section-bar-btn">＋</button>
-                    </div>
-                </div>
-                <div class="section-body">
-                    <div class="icd-empty">Brak wpisów</div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <button class="save-btn" onclick="saveVisit()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v14a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-        Zapisz wizytę
-    </button>
+        <div style="text-align:right;"><button type="submit" class="save-btn">Zapisz wizytę</button></div>
+    </form>
 
 </div>
 
@@ -413,35 +248,18 @@ function closeMenu() {
     document.getElementById('patientMenu').classList.remove('open');
     document.getElementById('overlay').classList.remove('open');
 }
-function showIcdInput() {
-    const row = document.getElementById('icd-row');
-    row.style.display = row.style.display === 'none' ? 'flex' : 'none';
-    if (row.style.display === 'flex') document.getElementById('icd-input').focus();
-}
-function addIcd() {
-    const input = document.getElementById('icd-input');
-    const val = input.value.trim();
-    if (!val) return;
-    document.getElementById('icd-empty').style.display = 'none';
-    const list = document.getElementById('icd-list');
-    const item = document.createElement('div');
-    item.style.cssText = 'display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #dce3ef;font-size:0.85rem;';
-    item.innerHTML = `<span style="font-weight:500;color:#1e4d8c;">${val}</span><button onclick="this.parentElement.remove()" style="margin-left:auto;background:none;border:none;cursor:pointer;color:#9aa3b2;">✕</button>`;
-    list.appendChild(item);
-    input.value = '';
-}
+
 document.addEventListener('DOMContentLoaded', () => {
     const waga = document.querySelector('[name="waga"]');
     const wzrost = document.querySelector('[name="wzrost"]');
     const bmi = document.getElementById('bmi-result');
     function calc() {
-        const w = parseFloat(waga?.value), h = parseFloat(wzrost?.value) / 100;
-        bmi.value = (w && h) ? (w / (h * h)).toFixed(1) : '';
+        const w = parseFloat(waga?.value), h = parseFloat(wzrost?.value)/100;
+        bmi.value = (w && h) ? (w/(h*h)).toFixed(1) : '';
     }
     waga?.addEventListener('input', calc);
     wzrost?.addEventListener('input', calc);
 });
-function saveVisit() { alert('Wizyta zapisana!'); }
 </script>
 </body>
 </html>

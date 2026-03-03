@@ -1,12 +1,13 @@
 from .models import Appointment, Service
 from django.views.generic import ListView, View, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from django.utils import timezone
 from registrations_visit.models import TimeSlot
 from django.contrib.auth.decorators import login_required
 from notifications.emails import appointment_confirmation
+from .forms import AppointmentDoctorForm
 
 
 
@@ -98,3 +99,34 @@ class AppointmentPriceListView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['services'] = Service.objects.select_related('doctor').order_by('doctor__specialization')
         return context
+
+
+
+class AppointmentNotesView(ListView):
+    template_name = 'booking/appointment_notes.html'
+    context_object_name = 'notes'
+    queryset = Appointment.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = AppointmentDoctorForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        appointment_id = request.POST.get('appointment_id')
+        new_note = request.POST.get('doctor_notes', '').strip()
+        if not new_note:
+            return redirect('booking:appointment_notes')
+
+        try:
+            appointment = Appointment.objects.get(id=appointment_id)
+        except Appointment.DoesNotExist:
+            return redirect('booking:appointment_notes')
+
+        if appointment.doctor_notes:
+            appointment.doctor_notes += f"\n{new_note}"
+        else:
+            appointment.doctor_notes = new_note
+
+        appointment.save()
+        return redirect('booking:appointment_notes')
