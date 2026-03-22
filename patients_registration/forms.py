@@ -11,6 +11,14 @@ User = get_user_model()
 
 
 class PatientRegistrationForm(forms.ModelForm):
+    pesel = PLPESELField(label='PESEL')
+    first_name = forms.CharField(label='Imię', max_length=150)
+    last_name = forms.CharField(label='Nazwisko', max_length=150)
+    date_of_birth = forms.DateField(
+        label='Data urodzenia',
+        widget=forms.DateInput(attrs={'type': 'date'}),
+    )
+
     password1 = forms.CharField(
         label='Hasło',
         widget=forms.PasswordInput,
@@ -20,42 +28,35 @@ class PatientRegistrationForm(forms.ModelForm):
         label='Potwierdź hasło',
         widget=forms.PasswordInput
     )
-    pesel = PLPESELField(label='PESEL')
-    first_name = forms.CharField(label='Imię', max_length=150)
-    last_name = forms.CharField(label='Nazwisko', max_length=150)
-    date_of_birth = forms.DateField(
-        label='Data urodzenia',
-        widget=forms.DateInput(attrs={'type': 'date'}),
-    )
 
     class Meta:
         model = User
         fields = [
-            'username',
             'first_name',
             'last_name',
-            'email',
             'pesel',
-            'password1',
-            'password2',
             'date_of_birth',
+            'email',
             'phone_number',
             'address',
+            'username',
+            'password1',
+            'password2',
         ]
 
         labels = {
-            'username': 'Nazwa użytkownika',
             'first_name': 'Imię',
             'last_name': 'Nazwisko',
             'pesel': 'PESEL',
             'date_of_birth': 'Data urodzenia',
-            'address': 'Adres',
-            'phone_number': 'Numer telefonu',
             'email': 'E-mail',
+            'phone_number': 'Numer telefonu',
+            'address': 'Adres',
+            'username': 'Nazwa użytkownika',
         }
 
         help_texts = {
-            'username': None,
+            'username': 'Wpisz nazwę użytkownika, która będzie używana do logowania.',
         }
 
     def clean_email(self):

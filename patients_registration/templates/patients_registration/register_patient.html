@@ -2,11 +2,13 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rejestracja pacjenta</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/registr_patient.css' %}">
+    <link rel="stylesheet" href="{% static 'css/register_patient.css' %}">
 </head>
 <body>
+
 <div class="registration-header">
     <h1>Rejestracja pacjenta</h1>
 </div>
@@ -20,17 +22,17 @@
         {% endfor %}
     {% endif %}
 
-    <form method="post">
+    <form method="post" novalidate>
         {% csrf_token %}
 
         {% if form.non_field_errors %}
-            <div class="error-msg-general">
+            <div class="alert alert-error">
                 {{ form.non_field_errors }}
             </div>
         {% endif %}
 
         {% for field in form %}
-            <p>
+            <div class="form-field-wrapper">
                 {{ field.label_tag }}
                 {{ field }}
 
@@ -39,17 +41,18 @@
                 {% endif %}
 
                 {% if field.help_text %}
-                    <br><small class="help-text">{{ field.help_text }}</small>
+                    <small class="help-text">{{ field.help_text|safe }}</small>
                 {% endif %}
-            </p>
+            </div>
         {% endfor %}
 
-        <button type="submit">Zarejestruj</button>
+        <button type="submit">Zarejestruj pacjenta</button>
     </form>
 </div>
 
 <div class="back-link">
     <a href="{% url 'visit:home_page' %}">Powrót do strony głównej</a>
 </div>
+
 </body>
 </html>
