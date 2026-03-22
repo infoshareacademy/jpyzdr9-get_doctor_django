@@ -1,5 +1,6 @@
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from .forms import PatientRegistrationForm
 
 def register_patient(request):
@@ -8,7 +9,10 @@ def register_patient(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
+            messages.success(request, f'Witaj {user.first_name}! Twoje konto zostało utworzone.')
             return redirect('visit:home_page')
+        else:
+            messages.error(request, 'Popraw błędy w formularzu rejestracyjnym.')
 
     else:
         form = PatientRegistrationForm()

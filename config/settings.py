@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key-please-change')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -136,6 +136,11 @@ MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_URL = 'patients_login'
 LOGIN_REDIRECT_URL = 'patients_login_dashboard'
 LOGOUT_REDIRECT_URL = 'patients_login'
+
+# Ustawienia sesji (autowylogowanie)
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 1800
+SESSION_SAVE_EVERY_REQUEST = True
 
 LOGGING = {
     'version': 1,

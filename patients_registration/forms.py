@@ -1,12 +1,24 @@
+from datetime import date
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from localflavor.pl.forms import PLPESELField
+
 from notifications.emails import welcome_mail
+
 
 User = get_user_model()
 
-class BaseUserCreationForm(forms.ModelForm):
+
+class PatientRegistrationForm(forms.ModelForm):
+    pesel = PLPESELField(label='PESEL')
+    first_name = forms.CharField(label='Imię', max_length=150)
+    last_name = forms.CharField(label='Nazwisko', max_length=150)
+    date_of_birth = forms.DateField(
+        label='Data urodzenia',
+        widget=forms.DateInput(attrs={'type': 'date'}),
+    )
+
     password1 = forms.CharField(
         label='Hasło',
         widget=forms.PasswordInput,
@@ -19,70 +31,76 @@ class BaseUserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'pesel']
+        fields = [
+            'first_name',
+            'last_name',
+            'pesel',
+            'date_of_birth',
+            'email',
+            'phone_number',
+            'address',
+            'username',
+            'password1',
+            'password2',
+        ]
 
-    def clean_password2(self):
-        password1 = self.cleaned_data.get('password1')
-        password2 = self.cleaned_data.get('password2')
+        labels = {
+            'first_name': 'Imię',
+            'last_name': 'Nazwisko',
+            'pesel': 'PESEL',
+            'date_of_birth': 'Data urodzenia',
+            'email': 'E-mail',
+            'phone_number': 'Numer telefonu',
+            'address': 'Adres',
+            'username': 'Nazwa użytkownika',
+        }
 
-        if password1 and password2 and password1 != password2:
-            raise forms.ValidationError('Hasła nie są identyczne!')
+        help_texts = {
+            'username': 'Wpisz nazwę użytkownika, która będzie używana do logowania.',
+        }
 
-        validate_password(password1, self.instance)
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError('Użytkownik o podanym adresie e-mail już istnieje')
+        return email
 
-        return password2
+    def clean(self):
+        cleaned_data = super().clean()
+        pass1 = cleaned_data.get('password1')
+        pass2 = cleaned_data.get('password2')
+        pesel = cleaned_data.get('pesel')
+        date_of_birth = cleaned_data.get('date_of_birth')
+
+        if pass1 and pass2 and pass1 != pass2:
+            self.add_error('password2', 'Hasła nie są identyczne!')
+
+        if pass1:
+            try:
+                validate_password(pass1, self.instance)
+            except forms.ValidationError as e:
+                self.add_error('password1', e)
+
+        if pesel and date_of_birth and len(pesel) == 11:
+            year = int(pesel[0:2])
+            month = int(pesel[2:4])
+            day = int(pesel[4:6])
+
+            if month > 20:
+                year += 2000
+                month -= 20
+            else:
+                year += 1900
+
+            if date_of_birth != date(year, month, day):
+                self.add_error('date_of_birth', 'Data urodzenia nie zgadza się z numerem PESEL!')
+                self.add_error('pesel', 'Numer PESEL nie zgadza się z datą urodzenia!')
+
+        return cleaned_data
 
     def save(self, commit=True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data['password1'])
-        if commit:
-            user.save()
-        return user
-
-class PatientRegistrationForm(BaseUserCreationForm):
-    first_name = forms.CharField(label='Imię', max_length=150)
-    last_name = forms.CharField(label='Nazwisko', max_length=150)
-    pesel = PLPESELField(label='PESEL')
-
-    class Meta(BaseUserCreationForm.Meta):
-        fields = [
-            'username',
-            'first_name',
-            'last_name',
-            'pesel',
-            'password1',
-            'password2',
-            'date_of_birth',
-            'address',
-            'emergency_contact',
-            'blood_type',
-            'allergies',
-            'email'
-        ]
-
-        labels = {
-            'username': 'Nazwa użytkownika',
-            'first_name': 'Imię',
-            'last_name': 'Nazwisko',
-            'pesel': 'PESEL',
-            'password1': 'Hasło',
-            'password2': 'Powtórz hasło',
-            'date_of_birth': 'Data urodzenia',
-            'address': 'Adres',
-            'emergency_contact': 'Kontakt awaryjny',
-            'blood_type': 'Grupa krwi',
-            'allergies': 'Alergie',
-            'email': 'E-mail',
-        }
-
-        help_texts = {
-            'username': None,
-            'password1': None,
-            'password2': None,
-        }
-
-    def save(self, commit=True):
-        user = super().save(commit=False)
         user.role = 'patient'
         user.first_name = self.cleaned_data.get('first_name')
         user.last_name = self.cleaned_data.get('last_name')
@@ -92,4 +110,3 @@ class PatientRegistrationForm(BaseUserCreationForm):
             welcome_mail(user)
 
         return user
-
