@@ -4,63 +4,113 @@
 {% block title %}Moje wizyty{% endblock %}
 
 {% block extra_css %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'css/appointment.css' %}">
 {% endblock %}
 
 {% block content %}
-
-<div class="container">
-
-    <div class="main-block">
-        <h2>Moje wizyty</h2>
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col">
+            <h1 class="page-title-gold border-bottom-gold">Moje wizyty</h1>
+        </div>
     </div>
 
-    <div class="appointments-wrapper">
-        <div class="appointments-block">
-            <h3>Aktualne wizyty</h3>
+    <div class="row mb-5">
+        <div class="col-12 mb-4">
+            <h2 class="section-heading"><i class="bi bi-calendar-check"></i> Aktualne wizyty</h2>
+        </div>
+
+        <div class="row g-4" id="upcoming-list">
             {% if upcoming_appointments %}
-                <ol>
-                    {% for appointment in upcoming_appointments %}
-                        <li>
-                            <p><strong>Lekarz:</strong> {{ appointment.slot.doctor.get_full_name|default:appointment.slot.doctor.username }}</p>
-                            <p><strong>Specjalizacja:</strong> {{ appointment.slot.doctor.specialization }}</p>
-                            <p><strong>Data:</strong> {{ appointment.slot.start_datetime|date:"d.m.Y" }}</p>
-                            <p><strong>Godzina:</strong> {{ appointment.slot.start_datetime|date:"H:i" }}</p>
-                            <form action="{% url 'booking:cancel_appointment' appointment.id %}" method="post" style="display:inline;">
+                {% for appointment in upcoming_appointments %}
+                <div class="col-md-6 col-lg-4 appointment-card-wrapper">
+                    <div class="card medical-card h-100 shadow-sm">
+                        <div class="card-header-custom">
+                            <span class="appointment-status">POTWIERDZONA</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="info-row">
+                                <span class="label">Lekarz:</span>
+                                <span class="value">{{ appointment.slot.doctor.get_full_name|default:appointment.slot.doctor.username }}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Specjalizacja:</span>
+                                <span class="value">{{ appointment.slot.doctor.specialization }}</span>
+                            </div>
+                            <div class="datetime-box mt-3">
+                                <div class="date">📅 {{ appointment.slot.start_datetime|date:"d.m.Y" }}</div>
+                                <div class="time">⏰ {{ appointment.slot.start_datetime|date:"H:i" }}</div>
+                            </div>
+
+                            <form action="{% url 'booking:cancel_appointment' appointment.id %}" method="post" class="mt-4">
                                 {% csrf_token %}
-                                <button type="submit" onclick="return confirm('Czy na pewno chcesz anulować tę wizytę?');">Anuluj wizytę</button>
+                                <button type="submit" class="btn btn-cancel w-100" onclick="return confirm('Czy na pewno chcesz anulować tę wizytę?');">
+                                    Anuluj wizytę
+                                </button>
                             </form>
-                        </li>
-                    {% endfor %}
-                </ol>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             {% else %}
-                <p>Brak aktualnych wizyt.</p>
+                <div class="col-12">
+                    <div class="empty-state text-center py-5">
+                        <p class="text-muted">Brak aktualnych wizyt w Twoim kalendarzu.</p>
+                    </div>
+                </div>
             {% endif %}
         </div>
+    </div>
 
-        <div class="appointments-block">
-            <h3>Poprzednie wizyty</h3>
+    <div class="row">
+        <div class="col-12 mb-4">
+            <h2 class="section-heading text-secondary"><i class="bi bi-clock-history"></i> Poprzednie wizyty</h2>
+        </div>
+
+        <div class="row g-3">
             {% if past_appointments %}
-                <ol>
-                    {% for appointment in past_appointments %}
-                        <li>
-                            <p><strong>Lekarz:</strong>{{ appointment.slot.doctor.get_full_name|default:appointment.slot.doctor.username }}</p>
-                            <p><strong>Specjalizacja:</strong>{{ appointment.slot.doctor.specialization }}</p>
-                            <p><strong>Data:</strong>{{ appointment.slot.start_datetime|date:"d.m.Y" }}</p>
-                            <p><strong>Godzina:</strong>{{ appointment.slot.start_datetime|date:"H:i" }}</p>
-                        </li>
-                    {% endfor %}
-                </ol>
+                {% for appointment in past_appointments %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card medical-card past shadow-sm border-0">
+                        <div class="card-body py-3">
+                            <p class="mb-1 text-dark"><strong>{{ appointment.slot.doctor.get_full_name }}</strong></p>
+                            <p class="mb-0 small text-muted">{{ appointment.slot.start_datetime|date:"d.m.Y" }} | {{ appointment.slot.doctor.specialization }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             {% else %}
-                <p>Brak poprzednich wizyt.</p>
+                <div class="col-12">
+                    <p class="text-muted italic small">Brak historii wizyt.</p>
+                </div>
             {% endif %}
         </div>
     </div>
 
-    <div class="back-wrapper">
-        <a href="{% url 'visit:home_page' %}">Powrót do strony głównej</a>
+    <div class="row mt-5">
+        <div class="col text-end">
+            <a href="{% url 'visit:home_page' %}" class="btn btn-back-home shadow-sm">
+                Powrót do strony głównej
+            </a>
+        </div>
     </div>
-
 </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.appointment-card-wrapper');
+
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.querySelector('.medical-card').style.transform = 'translateY(-5px)';
+                this.querySelector('.medical-card').style.transition = '0.3s';
+            });
+
+            card.addEventListener('mouseleave', function() {
+                this.querySelector('.medical-card').style.transform = 'translateY(0)';
+            });
+        });
+    });
+</script>
 {% endblock %}

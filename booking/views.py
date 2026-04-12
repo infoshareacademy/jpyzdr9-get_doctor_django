@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.utils import timezone
 from registrations_visit.models import TimeSlot
 from django.contrib.auth.decorators import login_required
-from notifications.emails import appointment_confirmation
+from notifications.emails import appointment_confirmation, appointment_cancellation
 from .forms import AppointmentDoctorForm
 
 
@@ -52,6 +52,12 @@ class CancelAppointmentView(LoginRequiredMixin, View):
         slot = appointment.slot
         slot.is_booked = False
         slot.save()
+
+        try:
+            appointment_cancellation(appointment.patient, appointment)
+        except Exception as e:
+            print(f"Błąd wysyłki maila z informacją o anulowaniu wizyty: {e}")
+
         appointment.delete()
         messages.success(request, "Wizyta została anulowana")
         return redirect('booking:appointment')
@@ -71,20 +77,30 @@ class AppointmentDetailListView(LoginRequiredMixin, TemplateView):
 
         return context
 
+
 @login_required
 def confirm_visit(request, slot_id):
     slot = get_object_or_404(TimeSlot, id=slot_id)
+
     if request.method == 'POST':
+        if slot.is_booked:
+            messages.error(request, "Ten termin został właśnie zarezerwowany przez kogoś innego.")
+            return redirect('registrations_visit:specializations_list')
+
         service_id = request.POST.get('service_id')
         service = get_object_or_404(Service, id=service_id)
+
         appointment = Appointment.objects.create(
             patient=request.user,
-            slot=slot,
+            slot=slot
         )
 
-        appointment_confirmation(request.user, appointment)
+        slot.is_booked = True
+        slot.save()
 
+        appointment_confirmation(request.user, appointment)
         return redirect('booking:appointment_success')
+
     return redirect('booking:appointment_detail', slot_id=slot.id)
 
 

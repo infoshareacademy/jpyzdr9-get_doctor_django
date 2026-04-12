@@ -25,6 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
+SSH_PRIVATE_KEY_STRING = os.getenv('SSH_PRIVATE_KEY_STRING')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -137,7 +138,7 @@ LOGIN_URL = 'patients_login'
 LOGIN_REDIRECT_URL = 'patients_login_dashboard'
 LOGOUT_REDIRECT_URL = 'patients_login'
 
-# Ustawienia sesji (autowylogowanie)
+# Session settings (auto logout)
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 1800
 SESSION_SAVE_EVERY_REQUEST = True

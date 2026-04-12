@@ -51,7 +51,7 @@ def select_spec(request, specialization):
                 'dermatolog': 'dermatolodzy',
                 'pediatra': 'pediatrzy',
                 'kardiolog': 'kardiolodzy',
-            }
+    }
 
     now = timezone.now()
     today = now.date()
@@ -75,26 +75,11 @@ def select_spec(request, specialization):
         doctor.week_schedule = []
 
         for day in visible_days:
-            day_slots = []
-            existing_slots = TimeSlot.objects.filter(
+            day_slots = TimeSlot.objects.filter(
                 doctor=doctor,
-                start_datetime__date=day
-            )
-            existing_dict = {}
-
-            for slot in existing_slots:
-                local_dt = timezone.localtime(slot.start_datetime)
-                existing_dict[local_dt.time()] = slot
-            current_time = timezone.make_aware(datetime.combine(day, WORK_START))
-            end_time = timezone.make_aware(datetime.combine(day, WORK_END))
-
-            while current_time < end_time:
-                slot_time = current_time.time()
-                if slot_time in existing_dict:
-                    day_slots.append(existing_dict[slot_time])
-                else:
-                    day_slots.append(None)
-                current_time += SLOT_INTERVAL
+                start_datetime__date=day,
+                is_booked=False
+            ).order_by('start_datetime')
 
             doctor.week_schedule.append({
                 'date': day,

@@ -1,53 +1,90 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <title>Moje konto</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/patient_profile.css' %}">
-</head>
-<body>
-<div class="page-title-wrapper">
-    <h1 class="page-title">Konto pacjenta</h1>
-</div>
-<div class="container">
-    <div class="left-column">
+{% extends "registrations_visit/base.html" %}
+{% load static %}
 
-        <div class="info-block">
-            <h2>Twoje Dane Osobowe</h2>
-            <p  class="font"><strong>Imię i Nazwisko:</strong> {{ user.get_full_name }}</p>
-            <p  class="font"><strong>PESEL:</strong> {{ user.pesel }}</p>
-            <p  class="font"><strong>Płeć:</strong> {{ user.get_sex_display|default:"Nie podano" }}</p>
-            <p  class="font"><strong>Data urodzenia:</strong> {{ patient.date_of_birth|default:"Nie podano" }}</p>
-        </div>
-        <div class="info-block">
-            <h2>Dane Kontaktowe</h2>
-            <p class="font"><strong>Telefon:</strong> {{ user.phone_number|default:"Nie podano" }}</p>
-            <p class="font"><strong>Email:</strong> {{ user.email|default:"Nie podano" }}</p>
-            <p class="font"><strong>Adres:</strong> {{ patient.address|default:"Nie podano" }}</p>
-            <p class="font"><strong>Kontakt awaryjny:</strong> {{ patient.emergency_contact|default:"Nie podano" }}</p>
-        </div>
-        <div class="info-block">
-            <h2>Informacje Medyczne</h2>
-            <p class="font"><strong>Grupa krwi:</strong> {{ patient.blood_type|default:"Nie podano" }}</p>
-            <p class="font"><strong>Alergie:</strong> {{ patient.allergies|default:"Nie podano"}}</p>
-        </div>
-    </div>
-    <div class="right-column">
-        <div class="info-block form-block">
-            <h2>Edytuj profil</h2>
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit">Zapisz zmiany</button>
-            </form>
+{% block extra_css %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/patient_profile.css' %}">
+{% endblock %}  {% block content %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="display-5 fw-bold gold-text border-bottom-gold">Konto pacjenta</h1>
         </div>
     </div>
 
-</div>
-<div class="back-link">
-    <a href="{% url 'visit:home_page' %}">Powrót do strony głównej</a>
+    <div class="row g-4">
+        <div class="col-lg-5">
+            <div class="card medical-card mb-4 shadow-sm">
+                <div class="card-header-custom">
+                    <h2 class="h5 mb-0">👨‍👩‍👧‍👦 Dane Osobowe</h2>
+                </div>
+                <div class="card-body">
+                    <p class="mb-2"><strong>Imię i Nazwisko:</strong> {{ user.get_full_name }}</p>
+                    <p class="mb-2"><strong>PESEL:</strong> {{ user.pesel }}</p>
+                    <p class="mb-2"><strong>Płeć:</strong> {{ user.get_sex_display|default:"Nie podano" }}</p>
+                    <p class="mb-0"><strong>Data urodzenia:</strong> {{ patient.date_of_birth|default:"Nie podano" }}</p>
+                </div>
+            </div>
+
+            <div class="card medical-card mb-4 shadow-sm">
+                <div class="card-header-custom">
+                    <h2 class="h5 mb-0">📞 Kontakt</h2>
+                </div>
+                <div class="card-body">
+                    <p class="mb-2"><strong>Telefon:</strong> {{ user.phone_number|default:"Nie podano" }}</p>
+                    <p class="mb-2"><strong>Email:</strong> {{ user.email|default:"Nie podano" }}</p>
+                    <p class="mb-0"><strong>Adres:</strong> {{ patient.address|default:"Nie podano" }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="card medical-card shadow-sm h-100">
+                <div class="card-header-custom d-flex justify-content-between align-items-center">
+                    <h2 class="h5 mb-0">⚙️ Edytuj profil</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" id="profile-form">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            {% for field in form %}
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold text-white small">{{ field.label }}</label>
+                                {{ field }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <button type="submit" class="btn btn-gold w-100 fw-bold py-3 mt-4">
+                            ZAPISZ ZMIANY
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col text-end">
+            <a href="{% url 'visit:home_page' %}" class="btn btn-outline-dark-blue px-4 py-2">
+                🏠 Powrót do menu głównego
+            </a>
+        </div>
+    </div>
 </div>
 
-</body>
-</html>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputs = document.querySelectorAll('input, select, textarea');
+
+        inputs.forEach(input => {
+            input.classList.add('form-control');
+
+            input.addEventListener('focus', () => {
+            });
+
+            input.addEventListener('blur', () => {
+            });
+        });
+    });
+</script>
+{% endblock %} ```

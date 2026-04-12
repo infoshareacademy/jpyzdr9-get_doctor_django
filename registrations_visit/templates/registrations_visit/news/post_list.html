@@ -1,34 +1,47 @@
 {% extends "registrations_visit/base.html" %}
-
 {% load static %}
-
-{% block title %}Blog - Lista postów{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/post_list.css' %}">
 {% endblock %}
 
 {% block content %}
-<h1>Nasze wiadomości</h1>
+<div class="blog-container">
+    <h1 class="main-title">Centrum Wiadomości</h1>
 
-{% if posts %}
-    {% for post in posts %}
-        <div class="post-block">
-            <h2>
-                <a href="{% url 'visit:post_detail' post.pk %}">
-                    {{ post.title }}
-                </a>
-            </h2>
-            <p class="autor">Autor: {{ post.author.get_full_name }}</p>
-            <p class="autor">{{ post.published_date|date:"d.m.Y H:i" }}</p>
-            <p>{{ post.content|truncatewords:30 }}</p>
-        </div>
-    {% endfor %}
-{% else %}
-    <p>Brak postów.</p>
-{% endif %}
+    <div class="posts-list">
+        {% if posts %}
+            {% for post in posts %}
+                <div class="post-item">
+                    <div class="post-title-tag">
+                        <h2>{{ post.title }}</h2>
+                    </div>
 
-<div class="back-link">
-    <a href="{% url 'visit:home_page' %}">Powrót do menu rezerwacji</a>
+                    <div class="post-content-card">
+                        <div class="post-meta">
+                            <span class="author">👨‍⚕️ {{ post.author.get_full_name }}</span>
+                            <span class="date">📅 {{ post.published_date|date:"d.m.Y" }}</span>
+                        </div>
+
+                        <p class="post-text">
+                            {{ post.content|truncatewords:25 }}
+                        </p>
+
+                        <div class="post-actions">
+                            <a href="{% url 'visit:post_detail' post.pk %}" class="btn-read-more">
+                                Czytaj więcej →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-data">Brak aktualnych wiadomości.</p>
+        {% endif %}
+    </div>
+
+    <div class="bottom-nav">
+        <a href="{% url 'visit:home_page' %}" class="btn-home">Powrót do menu głównego</a>
+    </div>
 </div>
 {% endblock %}

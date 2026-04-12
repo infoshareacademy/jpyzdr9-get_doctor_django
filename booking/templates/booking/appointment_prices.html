@@ -1,19 +1,51 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/appointment_prices.css' %}">
 </head>
 <body>
 
-{% regroup services by doctor.specialization as specializations %}
-{% for group in specializations%}
-    <h2>{{ group.grouper }}</h2>
-        <ul>
-            {% for service in services %}
-                <li>{{ service.name }} — {{ service.price }}</li>
-            {% endfor %}
-        </ul>
-{% endfor %}
+    <h1 class="cennik-title" data-aos="fade-down">Cennik Usług</h1>
+
+    <div class="services-grid">
+        {% regroup services by doctor.specialization as specializations %}
+
+        {% for group in specializations %}
+            <div class="category-card" data-aos="zoom-in" data-aos-delay="{{ forloop.counter }}00">
+                <div class="category-header">
+                    {{ group.grouper }}
+                </div>
+
+                <table class="service-table">
+                    <thead>
+                        <tr>
+                            <th>Usługa</th>
+                            <th style="text-align: right;">Cena</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for service in group.list %}
+                        <tr class="service-row">
+                            <td>{{ service.name }}</td>
+                            <td class="price-tag">{{ service.price }} zł</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+    </script>
 </body>
 </html>

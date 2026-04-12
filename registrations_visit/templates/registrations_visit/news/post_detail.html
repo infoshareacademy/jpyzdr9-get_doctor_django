@@ -1,29 +1,53 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>{{ post.title }}</title>
-    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }} | getDoctor</title>
     <link rel="stylesheet" href="{% static 'css/post_detail.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div id="progress-bar"></div>
 
-    <h1>{{ post.title }}</h1>
+    <header data-aos="fade-down">
+        <h1>{{ post.title }}</h1>
+    </header>
 
-    <div class="post-block">
-        <p class="autor">Autor: {{ post.author.get_full_name }}</p>
-        <p class="content">{{ post.content }}</p>
-    </div>
-
-    <div class="back-buttons">
-        <div class="back-link">
-            <a href="{% url 'visit:post_list' %}">Powrót do wszystkich postów</a>
+    <main class="post-block" data-aos="fade-up">
+        <div class="post-meta">
+            <p class="autor">👨‍⚕️ {{ post.author.get_full_name }}</p>
+            <p class="reading-time">⏱️ <span id="time">1</span> min czytania</p>
         </div>
-
-        <div class="back-link">
-            <a href="{% url 'visit:home_page' %}">Powrót do menu rezerwacji</a>
+        
+        <div class="content">
+            {{ post.content|linebreaks }}
         </div>
-    </div>
+    </main>
 
+    <footer class="back-buttons">
+        <div class="back-link">
+            <a href="{% url 'visit:post_list' %}">← Powrót do aktualności</a>
+        </div>
+        <div class="back-link">
+            <a href="{% url 'visit:home_page' %}">🏠 Menu główne</a>
+        </div>
+    </footer>
+
+    <script>
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+        };
+
+        const text = document.querySelector(".content").innerText;
+        const wpm = 200;
+        const words = text.trim().split(/\s+/).length;
+        const time = Math.ceil(words / wpm);
+        document.getElementById("time").innerText = time;
+    </script>
 </body>
 </html>

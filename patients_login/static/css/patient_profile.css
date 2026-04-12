@@ -1,98 +1,75 @@
+/* Tło strony - gradient z Twojego screena */
 body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #fefdf5 0%, #f6e6b4 100%) !important;
+    min-height: 100vh;
 }
 
-.page-title-wrapper {
-    width: 80%;
-    margin: 40px auto 30px auto;
-    border-radius: 10px;
-    background-color: #417690;
-    padding: 20px;
+/* Kolory złote (Wheat) */
+.gold-text {
+    color: #c5a676;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
 
-.page-title {
-    margin: 0;
-    text-align: left;
-    font-size: 36px;
-    color:wheat ;
+.border-bottom-gold {
+    border-bottom: 3px solid #c5a676;
+    padding-bottom: 10px;
 }
 
-.container {
-    width: 80%;
-    margin: 0 auto;
-    display: flex;
-    gap: 30px;
+/* Karta medyczna - Styl niebieski */
+.medical-card {
+    border: 2px solid white !important;
+    border-radius: 15px !important;
+    overflow: hidden;
+    background-color: #56869b !important;
 }
 
-.left-column {
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.right-column {
-    width: 60%;
-}
-
-.info-block {
-    background-color: #417690;
+.card-header-custom {
+    background-color: #3d6070;
+    padding: 15px 20px;
     color: wheat;
-    padding: 20px;
-    border-radius: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
 }
 
+.card-body {
+    color: white !important;
+}
 
-.info-block h2 {
-    margin: 0 0 15px 0;
-    text-align: center;
+.card-body strong {
     color: wheat;
-    font-size: 20px;
 }
 
-
-.form-block form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+/* Pola formularza */
+.bg-light-blue {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
-.form-block input,
-.form-block select,
-.form-block textarea {
-    width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    border: 2px solid #2f4f4f;
-    font-size: 15px;
-    box-sizing: border-box;
+.form-control:focus {
+    border-color: wheat;
+    box-shadow: 0 0 0 0.25rem rgba(245, 222, 179, 0.25);
 }
 
-.form-block button {
-    padding: 12px;
-    border-radius: 8px;
-    border: 2px solid #2f4f4f;
-    background-color: #6f94c6;
-    color: wheat;
-    font-size: 16px;
-    cursor: pointer;
+/* Przyciski */
+.btn-gold {
+    background-color: white;
+    color: #3d6070;
+    border: 2px solid wheat;
+    transition: all 0.3s ease;
 }
 
-.back-link {
-    width: 80%;
-    margin: 40px auto;
-    text-align: right;
+.btn-gold:hover {
+    background-color: wheat;
+    color: #3d6070;
+    transform: translateY(-2px);
 }
 
-.back-link a {
-    display: inline-block;
-    padding: 12px 20px;
-    border: 2px solid #417690;
-    border-radius: 8px;
-    text-decoration: none;
+.btn-outline-dark-blue {
+    background-color: white;
+    border: 2px solid #56869b;
+    color: #56869b;
     font-weight: bold;
-    color: #417690;
-    background-color: #ffffff;
+}
+
+.btn-outline-dark-blue:hover {
+    background-color: #56869b;
+    color: white;
 }

@@ -37,5 +37,16 @@ def appointment_confirmation(user, appointment):
     _base_send_mail(subject, message, user.email)
 
 
-def appointment_cancellation(user):
-    pass
+def appointment_cancellation(user, appointment):
+    doctor_full_name = appointment.slot.doctor.get_full_name()
+    visit_date = appointment.slot.start_datetime.strftime('%d.%m.%Y')
+    visit_time = appointment.slot.start_datetime.strftime('%H:%M')
+
+    subject = "Wizyta odwołana"
+    message = (
+        f'Witaj {user.first_name}!\n\n'
+        f'Informujemy, że Twoja wizyta u {doctor_full_name} '
+        f'zaplanowana na dzień {visit_date} o godzinie {visit_time} została odwołana.\n\n'
+        'Jeśli to nie Ty odwołałeś wizytę, skontaktuj się z naszą placówką.'
+    )
+    _base_send_mail(subject, message, user.email)
